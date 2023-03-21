@@ -13,8 +13,10 @@ class Player {
     this.image.frames = 4;
     this.image.framesIndex = 0;
 
-    this.posX = this.gameWidth - this.width * 1.5;
-    this.posY = this.gameHeight - this.height * 1.5; //pegado al suelo
+    //Para colocar al jugador encima de la plataforma
+    this.posX = (window.innerWidth - 150)- window.innerWidth/7;
+    this.posY = window.innerHeight/1.2 - 150;
+
     this.posY0 = this.posY;
     this.isMovingRight = false;
     this.isMovingLeft = false;
@@ -159,11 +161,12 @@ class Player {
       this.posY += this.velY;
       this.velY += this.gravity; //velocidad caida y frenado paulatino
     } else {
-      this.posY = this.posY0;
+      // this.posY = this.posY0;
       this.velY = 1;
     }
-    if (this.isMovingRight && this.width + this.posX <= this.gameWidth) {
+    if (this.isMovingRight && this.width + this.posX <= this.gameWidth*0.9) {
       this.posX += this.velX;
+      
     }
     if (this.isMovingLeft && this.posX + this.width / 2.5 > 0) {
       //revisar el width /2.5. Por que??

@@ -4,7 +4,6 @@ class Bullets {
     playerPosX,
     playerPosY,
     playerPosY0,
-    playerWidth,
     playerHeight
   ) {
     this.ctx = ctx;
@@ -17,12 +16,13 @@ class Bullets {
 
     this.radius = 10;
 
-    this.velX = 5;
-    this.velY = 1.5;
+    this.velX = 10;
+    this.velY = 1;
 
-    this.gravity = 0.3;
-    this.width = 50;
-    this.height = 50;
+    this.gravity = 1;
+
+    this.width = 100;
+    this.height = 100;
 
     this.image = new Image();
     this.image.src = "./img/sprites/2/fire.png";
@@ -55,6 +55,15 @@ class Bullets {
     if (this.posY >= this.playerPosY0 + this.playerHeight) {
       // Rebote
       this.velY *= 0;
+
+      this.posX += this.velX;
+      this.posY += this.velY;
+
+      this.velY += this.gravity;
+
+      if (this.posY >= this.playerPosY0 + this.playerHeight) { // Rebote
+        this.velY *= -1;
+      }
     }
 
   }

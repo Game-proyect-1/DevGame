@@ -13,8 +13,8 @@ class Enemy {
     this.image.frames = 4;
     this.image.framesIndex = 0;
 
-    this.posX = this.gameWidth - this.gameWidth;
-    this.posY = this.gameHeight - this.height * 1.5; //pegado al suelo
+    this.posX = (window.innerWidth*1.1) - window.innerWidth; //que empiece donde empieza la plataforma
+    this.posY = window.innerHeight/1.2 - 150; //encima de la plataforma
     this.posY0 = this.posY;
     this.isMovingRight = false;
     this.isMovingLeft = false;
