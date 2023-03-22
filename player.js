@@ -5,13 +5,16 @@ class Player {
     this.gameWidth = gameW;
     this.gameHeight = gameH;
 
-    this.width = 150;
-    this.height = 150;
+    this.width = 130;
+    this.height = 130;
 
     this.image = new Image();
-    this.image.src = "./img/sprites/2/Idle.png";
-    this.image.frames = 4;
+    this.image.src =
+      "./img/sprites juego/player/player quieto derecha.izquierda.png";
+    this.image.frames = 8;
     this.image.framesIndex = 0;
+
+    //  this.lives = 3;
 
     this.posX = this.gameWidth - this.width * 1.5;
     this.posY = this.gameHeight - this.height * 1.5; //pegado al suelo
@@ -24,7 +27,7 @@ class Player {
     this.bullets = [];
 
     this.setListeners();
-    this.velY = 2;
+    this.velY = 1;
     this.velX = 8;
     this.gravity = 0.6;
   }
@@ -49,6 +52,7 @@ class Player {
     this.bullets.forEach(function (bullet) {
       bullet.draw();
     });
+    // this.drawBoxLife();
 
     this.clearBullets();
   }
@@ -101,26 +105,26 @@ class Player {
     bullet.draw();
   }
   clearBullets() {
-    console.log(this.bullets);
     this.bullets = this.bullets.filter((bullet) => {
       return bullet.posX >= 0;
     });
   }
 
   moveRigth() {
-    // refactorizar en una sola función
+    // refactorizar en una sola función??
     this.isMovingRight = true;
-    this.image.src = "./img/sprites/2/Walk.png";
-    this.image.frames = 6;
+    this.image.src = "./img/sprites juego/player/andarPlayer.png";
+    this.image.frames = 15;
 
     //this.posX += 80;
   }
 
   moveLeft() {
     this.isMovingLeft = true;
-    this.image.src = "./img/sprites/2/Walk.png";
-    this.image.frames = 6;
-    //this.posX -= 80;
+    this.image.src =
+      "./img/sprites juego/player/andar player derecha-izquierda.png";
+    this.image.frames = 15;
+ 
   }
 
   jump() {
@@ -131,17 +135,10 @@ class Player {
   stop() {
     this.isMovingRight = false;
     this.isMovingLeft = false;
-    this.image.src = "./img/sprites/2/Idle.png";
-    this.image.frames = 4;
+    this.image.src =
+      "./img/sprites juego/player/player quieto derecha.izquierda.png";
+    this.image.frames = 8;
   }
-  target() {}
-
-  //   clearBullets() {
-  //     // Clear bullets (.filter 👀)
-  //     this.bullets = this.bullets.filter((bullet) => {
-  //       return bullet.posX <= this.gameWidth;
-  //     });
-  //   }
 
   animate(framesCounter) {
     if (framesCounter % 5 == 0) {
@@ -166,8 +163,16 @@ class Player {
       this.posX += this.velX;
     }
     if (this.isMovingLeft && this.posX + this.width / 2.5 > 0) {
-      //revisar el width /2.5. Por que??
+      //revisar el width /2.5.
       this.posX -= this.velX;
     }
   }
+  // drawBoxLife() {
+  //   this.ctx.beginPath();
+  //   // .arc(posX, posY, radius, startAngle, endAngle) + .fill
+  //   this.ctx.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
+  //   this.ctx.fill();
+  //   this.ctx.closePath();
+  //   this.move();
+  // }
 }

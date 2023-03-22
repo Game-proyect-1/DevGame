@@ -17,10 +17,10 @@ class Bullets {
 
     this.radius = 10;
 
-    this.velX = 5;
-    this.velY = 1.5;
+    this.velX = 8;
+    this.velY = 4;
 
-    this.gravity = 0.3;
+    this.gravity = 0.02;
     this.width = 50;
     this.height = 50;
 
@@ -48,15 +48,13 @@ class Bullets {
 
   move() {
     this.posX -= this.velX;
-    this.posY += this.velY;
-
+    this.posY -= this.velY;
     this.velY += this.gravity;
 
-    if (this.posY >= this.playerPosY0 + this.playerHeight) {
-      // Rebote
-      this.velY *= 0;
+    if (this.posY < this.playerPosY0) {
+      this.gravity -= 0.02;
+    } else {
     }
-
   }
 
   animate(framesCounter) {
@@ -69,9 +67,12 @@ class Bullets {
     }
   }
 
-  isCollision(posX, posY) { //colisión bullet que paso a game
+  isCollision(posX, posY) {
+    console.log(this.posX);
+    // console.log(this.enemy.lives);
+    // this.enemy.lives--;
     return (
-      this.posX - posX <= 50 && posX - this.posX <= 50 && this.posY >= posY
+      this.posX - posX <= 50 && posX - this.posX <= 50 && this.posY >= posY // no entiendo esto
     );
   }
 }

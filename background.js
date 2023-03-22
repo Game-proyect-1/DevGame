@@ -5,14 +5,14 @@ class Background {
     this.height = h;
 
     this.image = new Image();
-    this.image.src = "./img/background.jpeg";
+    this.image.src = "./img/sprites juego/background/BACKGROUND 4.png";
 
     this.posX = 0;
     this.posY = 0;
 
     // this.velX = 2; // mejor menos?
   }
-  
+
   draw() {
     this.ctx.drawImage(
       this.image,

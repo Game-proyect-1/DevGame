@@ -5,13 +5,15 @@ class Enemy {
     this.gameWidth = gameW;
     this.gameHeight = gameH;
 
-    this.width = 150;
-    this.height = 150;
+    this.width = 130;
+    this.height = 130;
 
     this.image = new Image();
-    this.image.src = "./img/sprites/1/Idle.png";
-    this.image.frames = 4;
+    this.image.src = "./img/sprites juego/enemy/andar enemy.png";
+    this.image.frames = 16;
     this.image.framesIndex = 0;
+
+    // this.lives=5
 
     this.posX = this.gameWidth - this.gameWidth;
     this.posY = this.gameHeight - this.height * 1.5; //pegado al suelo
@@ -19,12 +21,9 @@ class Enemy {
     this.isMovingRight = false;
     this.isMovingLeft = false;
 
-    // this.bullets = [];
-
-    //this.setListeners();
-    // this.velY = 2;
+  
     this.velX = 2;
-    // this.gravity = 0.6;
+
   }
 
   draw(framesCounter) {
@@ -44,11 +43,6 @@ class Enemy {
 
     this.move();
 
-    // this.bullets.forEach(function (bullet) {
-    //   bullet.draw();
-    // });
-
-    //     this.clearBullets();
   }
   animate(framesCounter) {
     if (framesCounter % 5 == 0) {
@@ -60,7 +54,7 @@ class Enemy {
     }
   }
   move() {
-    this.posX += 1;
+    this.posX += 2;
     if (this.posX + this.width >= this.gameWidth) {
       this.posX = 0;
     }

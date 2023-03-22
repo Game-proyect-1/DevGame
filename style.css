@@ -1,0 +1,8 @@
+.messages {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    margin: 0 auto;
+    width: 500px
+    /* max-width: 100% */
+}

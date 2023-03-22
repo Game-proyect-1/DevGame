@@ -47,6 +47,8 @@ const Game = {
 
       this.clear();
 
+      // this.updateLifeBar();
+
       this.drawAll();
 
       // this.generateObstacles();
@@ -67,13 +69,14 @@ const Game = {
     this.player = new Player(this.ctx, this.width, this.height, this.keys);
 
     this.enemy = new Enemy(this.ctx, this.width, this.height);
+    // this.lifeBar = new Lifebar(this.ctx, this.width, this.height);
 
-    this.platform = new Platform(
-      this.ctx,
-      this.gameWidth,
-      this.playerPosY0,
-      this.playerHeight0
-    );
+    // this.platform = new Platform(
+    //   this.ctx,
+    //   this.gameWidth,
+    //   this.playerPosY0,
+    //   this.playerHeight0
+    // );
   },
 
   drawAll() {
@@ -81,9 +84,10 @@ const Game = {
 
     this.player.draw(this.framesCounter);
     this.enemy.draw(this.framesCounter);
-    // this.bullets.draw();
 
-    this.platform.draw();
+    //  this.lifeBar.draw()
+
+    // this.platform.draw();
 
     this.player.bullets.map((bullet, index) => {
       if (bullet.isCollision(this.enemy.posX, this.enemy.posY)) {
@@ -104,7 +108,7 @@ const Game = {
   },
 
   isCollision() {
-    // colisión player y enemy
+    console.log("han chocado bullets?");
     return (
       this.player.posX - this.enemy.posX <= 50 &&
       this.enemy.posX - this.player.posX <= 50 &&
