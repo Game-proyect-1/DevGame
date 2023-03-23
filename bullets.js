@@ -5,7 +5,9 @@ class Bullets {
     playerPosY,
     playerPosY0,
     playerWidth,
-    playerHeight
+    playerHeight,
+    isMovingLeft,
+    isMovingRight
   ) {
     this.ctx = ctx;
 
@@ -23,6 +25,9 @@ class Bullets {
     this.gravity = 0.02;
     this.width = 50;
     this.height = 50;
+
+    this.isMovingRight = isMovingRight;
+    this.isMovingLeft = isMovingLeft;
 
     this.image = new Image();
     this.image.src = "./img/sprites/2/fire.png";
@@ -47,7 +52,14 @@ class Bullets {
   }
 
   move() {
-    this.posX -= this.velX;
+    console.log("left " + this.isMovingLeft);
+    console.log("right " + this.isMovingRight);
+    if (this.isMovingRight) {
+      this.posX += this.velX;
+    } else {
+      this.posX -= this.velX;
+    }
+
     this.posY -= this.velY;
     this.velY += this.gravity;
 
@@ -69,7 +81,7 @@ class Bullets {
 
   isCollisionBullet(posX, posY) {
     return (
-      this.posX - posX <= 50 && posX - this.posX <= 50 && this.posY >= posY // no entiendo esto
+      this.posX - posX <= 50 && posX - this.posX <= 50 && this.posY >= posY
     );
   }
 }

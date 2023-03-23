@@ -27,8 +27,11 @@ class Player {
     this.posX = this.gameWidth - this.width * 1.5;
     this.posY = this.gameHeight - this.height * 1.5; //pegado al suelo
     this.posY0 = this.posY;
-    this.isMovingRight = false;
-    this.isMovingLeft = false;
+    this.isMoving = false;
+
+    this.isStopped = false;
+    this.isLookingLeft = false;
+    this.isLookingRigth = false;
     this.lifeTimeCount = 0;
 
     this.keys = keys;
@@ -57,14 +60,14 @@ class Player {
     this.animate(framesCounter);
 
     this.move();
-
+    let lookRigth = this.isLookingRigth;
     //Pintar balas
     this.bullets.forEach(function (bullet) {
-      bullet.draw();
+      bullet.draw(3);
     });
+    //Pintar vidas
     let lifePosX = this.lifePosX;
     for (let index = 0; index < this.lives; index++) {
-      //Pintar vidas
       this.ctx.drawImage(this.livesImage, lifePosX, this.lifePosY, 80, 80);
       lifePosX -= 60;
     }
@@ -97,10 +100,10 @@ class Player {
     document.addEventListener("keyup", (e) => {
       switch (e.keyCode) {
         case this.keys.rigth:
-          this.stop();
+          this.stop(true);
           break;
         case this.keys.left:
-          this.stop();
+          this.stop(false);
           break;
       }
     });
@@ -113,11 +116,11 @@ class Player {
       this.posY,
       this.posY0,
       this.width,
-      this.height
+      this.height,
+      this.isLookingLeft,
+      this.isLookingRigth
     );
     this.bullets.push(bullet);
-    console.log(bullet);
-    bullet.draw();
   }
   clearBullets() {
     this.bullets = this.bullets.filter((bullet) => {
@@ -130,7 +133,10 @@ class Player {
     // if (this.posX + this.width >= this.gameWidth) {
     //   this.posX = 0;
     // } //por si queremos que de derecha pueda volver al inicio
-    this.isMovingRight = true;
+    this.isStopped = false;
+    this.isMoving = true;
+    this.isLookingRigth = true;
+    this.isLookingLeft = false;
     this.image.src = "./img/sprites juego/player/andarPlayer.png";
     this.image.frames = 15;
 
@@ -141,7 +147,10 @@ class Player {
     // if ((this.posX = this.gameWidth - this.gameWidth)) {
     //   this.posX = this.gameWidth;
     // } //por si queremos que de la izquierda pueda volver a la derecha del todo, PERO AHORA NO FUNCIONA
-    this.isMovingLeft = true;
+    this.isStopped = false;
+    this.isMoving = true;
+    this.isLookingLeft = true;
+    this.isLookingRigth = false;
     this.image.src =
       "./img/sprites juego/player/andar player derecha-izquierda.png";
     this.image.frames = 15;
@@ -152,12 +161,17 @@ class Player {
     this.velY -= 8;
   }
 
-  stop() {
-    this.isMovingRight = false;
-    this.isMovingLeft = false;
-    this.image.src =
-      "./img/sprites juego/player/player quieto derecha.izquierda.png";
-    this.image.frames = 8;
+  stop(isLookingRigth) {
+    if (isLookingRigth) {
+      this.image.src = "./img/sprites juego/player/quietp.png";
+      this.image.frames = 8;
+    } else {
+      this.image.src =
+        "./img/sprites juego/player/player quieto derecha.izquierda.png";
+      this.image.frames = 8;
+    }
+    this.isMoving = false;
+    this.isStopped = true;
   }
 
   animate(framesCounter) {
@@ -179,13 +193,16 @@ class Player {
       this.posY = this.posY0;
       this.velY = 1;
     }
-    if (this.isMovingRight && this.width + this.posX <= this.gameWidth) {
-      this.posX += this.velX;
-    }
-    if (this.isMovingLeft && this.posX + this.width / 2.5 > 0) {
-      //revisar el width /2.5.
-      this.posX -= this.velX;
+
+    if (this.isMoving) {
+      if (this.isLookingRigth && this.width + this.posX <= this.gameWidth) {
+        this.posX += this.velX;
+      }
+
+      if (this.isLookingLeft && this.posX + this.width / 2.5 > 0) {
+        //revisar el width /2.5.
+        this.posX -= this.velX;
+      }
     }
   }
-  
 }
