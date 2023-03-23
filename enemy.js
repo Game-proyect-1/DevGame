@@ -13,17 +13,16 @@ class Enemy {
     this.image.frames = 16;
     this.image.framesIndex = 0;
 
-    // this.lives=5
+    this.lives = 30;
 
     this.posX = this.gameWidth - this.gameWidth;
     this.posY = this.gameHeight - this.height * 1.5; //pegado al suelo
     this.posY0 = this.posY;
     this.isMovingRight = false;
     this.isMovingLeft = false;
+    this.isDead = false;
 
-  
     this.velX = 2;
-
   }
 
   draw(framesCounter) {
@@ -42,7 +41,6 @@ class Enemy {
     this.animate(framesCounter);
 
     this.move();
-
   }
   animate(framesCounter) {
     if (framesCounter % 5 == 0) {
@@ -59,4 +57,5 @@ class Enemy {
       this.posX = 0;
     }
   }
+
 }

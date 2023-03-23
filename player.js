@@ -14,13 +14,22 @@ class Player {
     this.image.frames = 8;
     this.image.framesIndex = 0;
 
-    //  this.lives = 3;
+    this.lives = 3;
+    this.livesImage = new Image();
+    this.livesImage.src = "./img/sprites juego/player/life.png";
+    this.lifePosX = this.gameWidth - 100;
+    this.lifePosY = 0;
+
+    //imagen Game Over PREGUNTAR PORQUE AQUI FUNCIONA Y EN GAME.JS NO
+    this.imageGameOver = new Image();
+    this.imageGameOver.src = "./img/sprites juego/player/gameover.png";
 
     this.posX = this.gameWidth - this.width * 1.5;
     this.posY = this.gameHeight - this.height * 1.5; //pegado al suelo
     this.posY0 = this.posY;
     this.isMovingRight = false;
     this.isMovingLeft = false;
+    this.lifeTimeCount = 0;
 
     this.keys = keys;
 
@@ -49,10 +58,16 @@ class Player {
 
     this.move();
 
+    //Pintar balas
     this.bullets.forEach(function (bullet) {
       bullet.draw();
     });
-    // this.drawBoxLife();
+    let lifePosX = this.lifePosX;
+    for (let index = 0; index < this.lives; index++) {
+      //Pintar vidas
+      this.ctx.drawImage(this.livesImage, lifePosX, this.lifePosY, 80, 80);
+      lifePosX -= 60;
+    }
 
     this.clearBullets();
   }
@@ -112,6 +127,9 @@ class Player {
 
   moveRigth() {
     // refactorizar en una sola función??
+    // if (this.posX + this.width >= this.gameWidth) {
+    //   this.posX = 0;
+    // } //por si queremos que de derecha pueda volver al inicio
     this.isMovingRight = true;
     this.image.src = "./img/sprites juego/player/andarPlayer.png";
     this.image.frames = 15;
@@ -120,11 +138,13 @@ class Player {
   }
 
   moveLeft() {
+    // if ((this.posX = this.gameWidth - this.gameWidth)) {
+    //   this.posX = this.gameWidth;
+    // } //por si queremos que de la izquierda pueda volver a la derecha del todo, PERO AHORA NO FUNCIONA
     this.isMovingLeft = true;
     this.image.src =
       "./img/sprites juego/player/andar player derecha-izquierda.png";
     this.image.frames = 15;
- 
   }
 
   jump() {
@@ -167,12 +187,5 @@ class Player {
       this.posX -= this.velX;
     }
   }
-  // drawBoxLife() {
-  //   this.ctx.beginPath();
-  //   // .arc(posX, posY, radius, startAngle, endAngle) + .fill
-  //   this.ctx.arc(this.posX, this.posY, this.radius, 0, Math.PI * 2);
-  //   this.ctx.fill();
-  //   this.ctx.closePath();
-  //   this.move();
-  // }
+  
 }

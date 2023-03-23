@@ -67,10 +67,7 @@ class Bullets {
     }
   }
 
-  isCollision(posX, posY) {
-    console.log(this.posX);
-    // console.log(this.enemy.lives);
-    // this.enemy.lives--;
+  isCollisionBullet(posX, posY) {
     return (
       this.posX - posX <= 50 && posX - this.posX <= 50 && this.posY >= posY // no entiendo esto
     );

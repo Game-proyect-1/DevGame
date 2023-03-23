@@ -38,7 +38,6 @@ const Game = {
 
   start() {
     this.reset();
-
     this.interval = setInterval(() => {
       this.framesCounter++;
       if (this.framesCounter > 5000) {
@@ -54,9 +53,19 @@ const Game = {
       // this.generateObstacles();
 
       // this.clearObstacles();
+      if (this.player.lifeTimeCount !== 0) {
+        this.player.lifeTimeCount--;
+      }
 
       if (this.isCollision()) {
-        this.gameOver();
+        if (this.player.lives == 0) {
+          this.gameOver();
+        } else {
+          if (this.player.lifeTimeCount == 0) {
+            this.player.lives--;
+            this.player.lifeTimeCount = 30;
+          }
+        }
       }
     }, 1000 / this.FPS);
 
@@ -67,8 +76,8 @@ const Game = {
     this.background = new Background(this.ctx, this.width, this.height);
 
     this.player = new Player(this.ctx, this.width, this.height, this.keys);
-
     this.enemy = new Enemy(this.ctx, this.width, this.height);
+
     // this.lifeBar = new Lifebar(this.ctx, this.width, this.height);
 
     // this.platform = new Platform(
@@ -83,24 +92,24 @@ const Game = {
     this.background.draw();
 
     this.player.draw(this.framesCounter);
-    this.enemy.draw(this.framesCounter);
+    if (!this.enemy.isDead) {
+      this.enemy.draw(this.framesCounter);
+    }
 
     //  this.lifeBar.draw()
 
     // this.platform.draw();
 
     this.player.bullets.map((bullet, index) => {
-      if (bullet.isCollision(this.enemy.posX, this.enemy.posY)) {
+      // si hay colision bullet enemy, se borra la bala y se quita una vida al enemigo
+      if (bullet.isCollisionBullet(this.enemy.posX, this.enemy.posY)) {
         this.player.bullets.splice(index, 1);
+        this.enemy.lives--;
+        if (this.enemy.lives == 0) {
+          this.enemy.isDead = true;
+        }
       }
-      //colisión console.log bullet, enemy
-      // if (!bullet.isCollision(this.enemy.posX, this.enemy.posY)) {
-      //   bullet.draw(this.framesCounter);
-      // }
-      // if (this.isCollision) {
-      // }
     });
-    //si hago de enemy un array, iria tmb aquí con un for Each
   },
 
   clear() {
@@ -108,7 +117,6 @@ const Game = {
   },
 
   isCollision() {
-    console.log("han chocado bullets?");
     return (
       this.player.posX - this.enemy.posX <= 50 &&
       this.enemy.posX - this.player.posX <= 50 &&
@@ -126,6 +134,13 @@ const Game = {
   },
   gameOver() {
     // .clearInterval
+    this.ctx.drawImage(
+      this.player.imageGameOver,
+      this.width / 2 - 250,
+      200,
+      500,
+      250
+    );
     clearInterval(this.interval);
   },
 };
