@@ -13,10 +13,13 @@ class Enemy {
     this.image.frames = 16;
     this.image.framesIndex = 0;
 
-    this.lives = 30;
+    this.lives = 40;
+
+    this.imageWin = new Image();
+    this.imageWin.src = "./img/sprites juego/winner.png";
 
     this.posX = this.gameWidth - this.gameWidth;
-    this.posY = this.gameHeight - this.height * 1.5; //pegado al suelo
+    this.posY = this.gameHeight - this.height * 2.5; //pegado al suelo
     this.posY0 = this.posY;
     this.isMovingRight = false;
     this.isMovingLeft = false;
@@ -57,5 +60,4 @@ class Enemy {
       this.posX = 0;
     }
   }
-
 }

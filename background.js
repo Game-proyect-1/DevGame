@@ -22,21 +22,4 @@ class Background {
       this.height
     );
   }
-  // this.ctx.drawImage(
-  //   this.image,
-  //   this.posX - this.width, //seria menos?
-  //   this.posY,
-  //   this.width,
-  //   this.height
-  // );
-
-  //   this.move();
-  // }
-
-  // move() {
-  //   this.posX += this.velX; //+??
-  //   if (this.posX >= this.width) {
-  //     this.posX = 0;
-  //   }
-  // }
 }

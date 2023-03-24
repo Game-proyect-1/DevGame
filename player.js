@@ -3,18 +3,18 @@ class Player {
     this.ctx = ctx;
 
     this.gameWidth = gameW;
-    this.gameHeight = gameH;
+    this.gameHeight = gameH; //medidas canvas
 
-    this.width = 130;
+    this.width = 120; //medidas player
     this.height = 130;
 
-    this.image = new Image();
+    this.image = new Image(); //imagen  player
     this.image.src =
       "./img/sprites juego/player/player quieto derecha.izquierda.png";
     this.image.frames = 8;
     this.image.framesIndex = 0;
 
-    this.lives = 3;
+    this.lives = 3;  //imagen vidas
     this.livesImage = new Image();
     this.livesImage.src = "./img/sprites juego/player/life.png";
     this.lifePosX = this.gameWidth - 100;
@@ -24,12 +24,12 @@ class Player {
     this.imageGameOver = new Image();
     this.imageGameOver.src = "./img/sprites juego/player/gameover.png";
 
-    this.posX = this.gameWidth - this.width * 1.5;
-    this.posY = this.gameHeight - this.height * 1.5; //pegado al suelo
+    this.posX = this.gameWidth - this.width * 1.5; //dentro del game donde posicionar al player
+    this.posY = this.gameHeight - this.height * 2.5; //pegado al suelo
     this.posY0 = this.posY;
     this.isMoving = false;
 
-    this.isStopped = false;
+    this.isStopped = false; //inicializo booleanos
     this.isLookingLeft = false;
     this.isLookingRigth = false;
     this.lifeTimeCount = 0;
@@ -91,9 +91,6 @@ class Player {
         case this.keys.left:
           this.moveLeft();
           break;
-        case this.keys.target:
-          this.target();
-          break;
       }
     });
 
@@ -120,7 +117,7 @@ class Player {
       this.isLookingLeft,
       this.isLookingRigth
     );
-    this.bullets.push(bullet);
+    this.bullets.push(bullet); //cuando pulso disparar, agrego una bala al array para que dentro de interval se pinte
   }
   clearBullets() {
     this.bullets = this.bullets.filter((bullet) => {
@@ -129,9 +126,6 @@ class Player {
   }
 
   moveRigth() {
-    // refactorizar en una sola función??
-    // if (this.posX + this.width >= this.gameWidth) {
-    //   this.posX = 0;
     // } //por si queremos que de derecha pueda volver al inicio
     this.isStopped = false;
     this.isMoving = true;
@@ -144,9 +138,7 @@ class Player {
   }
 
   moveLeft() {
-    // if ((this.posX = this.gameWidth - this.gameWidth)) {
-    //   this.posX = this.gameWidth;
-    // } //por si queremos que de la izquierda pueda volver a la derecha del todo, PERO AHORA NO FUNCIONA
+    // } //por si queremos que de la izquierda pueda volver a la derecha del todo
     this.isStopped = false;
     this.isMoving = true;
     this.isLookingLeft = true;

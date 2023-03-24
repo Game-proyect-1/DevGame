@@ -9,6 +9,7 @@ const Game = {
   player: undefined,
   enemy: undefined,
   platform: undefined,
+  backAudio: new Audio("./img/music/finalFantasy.mp4"), // musica
 
   keys: {
     jump: 38,
@@ -24,6 +25,7 @@ const Game = {
     this.setDimensions();
     this.start();
   },
+
   setContext() {
     this.canvas = document.querySelector("#myCanvas");
     this.ctx = this.canvas.getContext("2d");
@@ -37,55 +39,57 @@ const Game = {
   },
 
   start() {
-    this.reset();
+    this.reset(); //instancias
+
     this.interval = setInterval(() => {
+      // intervalo
       this.framesCounter++;
       if (this.framesCounter > 5000) {
         this.framesCounter = 0;
       }
 
-      this.clear();
+      this.clear(); //borra todo el canvas
 
-      // this.updateLifeBar();
+      this.drawAll(); //pinta todo el canvas
 
-      this.drawAll();
-
-      // this.generateObstacles();
-
-      // this.clearObstacles();
       if (this.player.lifeTimeCount !== 0) {
+        //contador tiempo player,
         this.player.lifeTimeCount--;
       }
 
       if (this.isCollision()) {
         if (this.player.lives == 0) {
+          //si al colisionar tiene 0 vidas, llama GAMEOVER
           this.gameOver();
         } else {
           if (this.player.lifeTimeCount == 0) {
+            //al chocar, el contador vuelve a 30, por lo que al player no pierde las 3 vidas a la vez(por el interval)
             this.player.lives--;
             this.player.lifeTimeCount = 30;
           }
         }
+        if (this.enemy.lives == 0) {
+        }
       }
     }, 1000 / this.FPS);
 
-    this.clearBullets();
+    this.clearBullets(); //quitar balas fuera de pantalla
   },
 
   reset() {
+    //instancias
     this.background = new Background(this.ctx, this.width, this.height);
 
     this.player = new Player(this.ctx, this.width, this.height, this.keys);
     this.enemy = new Enemy(this.ctx, this.width, this.height);
+    this.platform = new Platform(
+      this.ctx,
+      this.width,
+      this.height,
+      this.player.posX
+    );
 
-    // this.lifeBar = new Lifebar(this.ctx, this.width, this.height);
-
-    // this.platform = new Platform(
-    //   this.ctx,
-    //   this.gameWidth,
-    //   this.playerPosY0,
-    //   this.playerHeight0
-    // );
+    this.backAudio.play();
   },
 
   drawAll() {
@@ -96,17 +100,17 @@ const Game = {
       this.enemy.draw(this.framesCounter);
     }
 
-    //  this.lifeBar.draw()
-
-    // this.platform.draw();
+    this.platform.draw();
 
     this.player.bullets.map((bullet, index) => {
       // si hay colision bullet enemy, se borra la bala y se quita una vida al enemigo
       if (bullet.isCollisionBullet(this.enemy.posX, this.enemy.posY)) {
         this.player.bullets.splice(index, 1);
         this.enemy.lives--;
+        console.log(this.enemy.lives);
         if (this.enemy.lives == 0) {
           this.enemy.isDead = true;
+          this.win(); // pantalla WIN
         }
       }
     });
@@ -117,6 +121,7 @@ const Game = {
   },
 
   isCollision() {
+    //colisión enemy y player
     return (
       this.player.posX - this.enemy.posX <= 50 &&
       this.enemy.posX - this.player.posX <= 50 &&
@@ -125,6 +130,7 @@ const Game = {
   },
 
   clearBullets() {
+    // se borra la bala que colisiona con el enemy
     this.player.bullets = this.player.bullets.map((bullet) => {
       if (this.isCollision) {
         let bulletCollision = this.player.bullets.indexOf(bullet);
@@ -133,7 +139,6 @@ const Game = {
     });
   },
   gameOver() {
-    // .clearInterval
     this.ctx.drawImage(
       this.player.imageGameOver,
       this.width / 2 - 250,
@@ -143,12 +148,16 @@ const Game = {
     );
     clearInterval(this.interval);
   },
-};
 
-// generar obstaculos
-// borrar obstaculos
-// colisión ,
-// contador vida player, sino hay colision y el enemigo sale del ancho de la
-//destructionEnemy
-// podemos meter función , colisión lineas extra arriba por ejemplo
-// game over (  clearInterval(this.intervalId) )
+  win() {
+    this.ctx.drawImage(
+      this.enemy.imageWin,
+      this.width / 2 - 250,
+      200,
+      500,
+      250
+    );
+
+    clearInterval(this.interval);
+  },
+};

@@ -12,7 +12,7 @@ class Bullets {
     this.ctx = ctx;
 
     this.posX = playerPosX;
-    this.posY = playerPosY + playerHeight * 0.5;
+    this.posY = playerPosY + playerHeight * 0.5; //mitad del player
 
     this.playerPosY0 = playerPosY0;
     this.playerHeight = playerHeight;
@@ -35,7 +35,7 @@ class Bullets {
     this.image.framesIndex = 0;
   }
 
-  draw(framesCounter) {
+  draw(framesCounter) { //cada vez que en game llamo a draw, pinta, animate con frames y se mueve
     this.ctx.drawImage(
       this.image,
       (this.image.width / this.image.frames) * this.image.framesIndex,
@@ -52,8 +52,7 @@ class Bullets {
   }
 
   move() {
-    console.log("left " + this.isMovingLeft);
-    console.log("right " + this.isMovingRight);
+    
     if (this.isMovingRight) {
       this.posX += this.velX;
     } else {
@@ -70,7 +69,7 @@ class Bullets {
   }
 
   animate(framesCounter) {
-    if (framesCounter % 5 == 0) {
+    if (framesCounter % 1 == 0) {
       this.image.framesIndex++;
     }
 
@@ -81,7 +80,7 @@ class Bullets {
 
   isCollisionBullet(posX, posY) {
     return (
-      this.posX - posX <= 50 && posX - this.posX <= 50 && this.posY >= posY
+      this.posX - posX <= 50 && posX - this.posX <= 50 && this.posY >= posY // es la posicion del enemy menos la posicion de la bala, si restadas dan menos, es que se han chocado
     );
   }
 }
