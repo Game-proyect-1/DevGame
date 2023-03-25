@@ -26,18 +26,15 @@
 //   }
 // }
 class Platform {
-  constructor(ctx, width, height, gameW, gameH) {
+  constructor(ctx) {
     this.ctx = ctx;
-    this.width = 1300;
-    this.height = 100;
-
-    this.gameWidth = gameW;
-    this.gameHeight = gameH;
+    this.posX = window.innerWidth * 1.1 - window.innerWidth;
+    this.posY = window.innerHeight / 1.2;
+    this.width = window.innerWidth / 1.3;
+    this.height = window.innerHeight / 9;
 
     this.image = new Image();
     this.image.src = "./img/sprites juego/Platform/платформа-png-5.png";
-    this.posX = gameW / 8;
-    this.posY = 528;
   }
 
   draw() {

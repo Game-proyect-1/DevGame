@@ -1,4 +1,5 @@
-class Obstacle { // porque los obstaculos tardan tanto en empezar a generarse
+class Obstacle {
+  // porque los obstaculos tardan tanto en empezar a generarse
   constructor(ctx, gameWidth, playerPosY0, playerHeight) {
     this.ctx = ctx;
     this.width = 50;

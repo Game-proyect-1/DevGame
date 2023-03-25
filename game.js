@@ -78,6 +78,22 @@ const Game = {
         if (this.enemy.lives == 0) {
         }
       }
+
+      //----------
+      if (this.isCollisionObstacles(true)) {
+        this.player.lifeTimeCount = 40;
+        this.player.lives--;
+        if (this.player.lives == 0) {
+          this.gameOver();
+        } else {
+          if (this.player.lifeTimeCount == 0) {
+            this.player.lives--;
+            this.player.lifeTimeCount = 40;
+          }
+        }
+      }
+
+      //--------
     }, 1000 / this.FPS);
 
     this.clearBullets(); //quitar balas fuera de pantalla
@@ -95,6 +111,7 @@ const Game = {
       this.height,
       this.player.posX
     );
+    this.obstacles = [];
 
     this.backAudio.play();
   },
@@ -198,5 +215,16 @@ const Game = {
   sumScore() {
     this.score += 0.01;
     // no consigo que muestre solo 2 decimales
+  },
+
+  isCollisionObstacles() {
+    //colision obstaculo player
+    return this.obstacles.some((obs) => {
+      return (
+        this.player.posX + this.player.width >= obs.posX &&
+        this.player.posY + this.player.height >= obs.posY &&
+        this.player.posX <= obs.posX + obs.width
+      );
+    });
   },
 };
