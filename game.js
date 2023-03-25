@@ -44,6 +44,9 @@ const Game = {
   },
 
   start() {
+    console.log(this.width, this.height);
+
+    this.backAudio.play();
     this.reset(); //instancias
 
     this.interval = setInterval(() => {
@@ -62,42 +65,26 @@ const Game = {
       this.clearObstacles();
       this.sumScore();
 
+      if (this.player.lives == 0) {
+        //si al colisionar tiene 0 vidas, llama GAMEOVER
+        this.gameOver();
+      }
+
       if (this.player.lifeTimeCount !== 0) {
         //contador tiempo player desde que choca con enemy, para que no muera de golpe
         this.player.lifeTimeCount--;
-      }
-
-      if (this.isCollision()) {
-        if (this.player.lives == 0) {
-          //si al colisionar tiene 0 vidas, llama GAMEOVER
-          this.gameOver();
-        } else {
-          if (this.player.lifeTimeCount == 0) {
-            //al chocar, el contador vuelve a 30, por lo que al player no pierde las 3 vidas a la vez(por el interval)
-            this.player.lives--;
-            this.player.lifeTimeCount = 40;
-          }
+      } else {
+        if (this.isCollision()) {
+          //al chocar, el contador vuelve a 30, por lo que al player no pierde las 3 vidas a la vez(por el interval)
+          this.player.lives--;
+          this.player.lifeTimeCount = 40;
         }
-        if (this.enemy.lives == 0) {
-        }
-      }
-
-      //----------
-      // if (this.player.lifeTimeCount == 0) {
-      //   //al chocar, el contador vuelve a 30, por lo que al player no pierde las 3 vidas a la vez(por el interval)
-      //   this.player.lives--;
-      //   this.player.lifeTimeCount = 40;
-      // }
-      if (this.isCollisionObstacles()) {
-        this.player.lifeTimeCount = 40;
-        console.log(this.player.lifeTimeCount);
-        this.player.lives--;
-        if (this.player.lives == 0) {
-          this.gameOver();
-        } else {
-          if (this.player.lifeTimeCount == 0) {
-            this.player.lives--;
-            this.player.lifeTimeCount = 40;
+        if (this.isCollisionObstacles()) {
+          //al chocar, el contador vuelve a 30, por lo que al player no pierde las 3 vidas a la vez(por el interval)
+          this.player.lives--;
+          this.player.lifeTimeCount = 40;
+          if (this.player.lives == 0) {
+            this.gameOver();
           }
         }
       }
@@ -121,8 +108,6 @@ const Game = {
       this.player.posX
     );
     this.obstacles = [];
-
-    this.backAudio.play();
   },
 
   drawAll() {
@@ -203,9 +188,9 @@ const Game = {
       500,
       250
     );
-    clearInterval(this.interval);
     this.backAudio.pause();
     this.gameoverAudio.play();
+    clearInterval(this.interval);
   },
 
   win() {
@@ -216,10 +201,9 @@ const Game = {
       500,
       250
     );
-
-    clearInterval(this.interval);
     this.backAudio.pause();
     this.winAudio.play();
+    clearInterval(this.interval);
   },
   printScore() {
     this.ctx.font = "30px Arial";
@@ -234,7 +218,7 @@ const Game = {
     //colision obstaculo player
     return this.obstacles.some((obs) => {
       return (
-        this.player.posX + this.player.width >= obs.posX &&
+        this.player.posX >= obs.posX &&
         this.player.posY + this.player.height >= obs.posY &&
         this.player.posX <= obs.posX + obs.width
       );
