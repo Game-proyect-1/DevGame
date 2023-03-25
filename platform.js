@@ -37,7 +37,7 @@ class Platform {
     this.image = new Image();
     this.image.src = "./img/sprites juego/Platform/платформа-png-5.png";
     this.posX = gameW / 8;
-    this.posY = 580;
+    this.posY = 528;
   }
 
   draw() {

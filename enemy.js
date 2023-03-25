@@ -13,19 +13,21 @@ class Enemy {
     this.image.frames = 16;
     this.image.framesIndex = 0;
 
-    this.lives = 40;
+    this.lives = 50;
 
-    this.imageWin = new Image();
-    this.imageWin.src = "./img/sprites juego/winner.png";
+    this.imagewin = new Image();
+    this.imagewin.src = "./img/sprites juego/winner.png";
 
-    this.posX = this.gameWidth - this.gameWidth;
+    this.posX = this.gameWidth - this.gameWidth + this.height;
     this.posY = this.gameHeight - this.height * 2.5; //pegado al suelo
     this.posY0 = this.posY;
+    this.posX0 = this.posX;
     this.isMovingRight = false;
     this.isMovingLeft = false;
     this.isDead = false;
 
     this.velX = 2;
+    this.aceleration = 0.002;
   }
 
   draw(framesCounter) {
@@ -55,9 +57,10 @@ class Enemy {
     }
   }
   move() {
-    this.posX += 2;
+    this.velX += this.aceleration;
+    this.posX += this.velX;
     if (this.posX + this.width >= this.gameWidth) {
-      this.posX = 0;
+      this.posX = this.posX0;
     }
   }
 }

@@ -9,6 +9,8 @@ const Game = {
   player: undefined,
   enemy: undefined,
   platform: undefined,
+  obstacles: [],
+  score: 0,
   backAudio: new Audio("./img/music/finalFantasy.mp4"), // musica
 
   keys: {
@@ -52,8 +54,13 @@ const Game = {
 
       this.drawAll(); //pinta todo el canvas
 
+      this.generateObstacles();
+
+      this.clearObstacles();
+      this.sumScore();
+
       if (this.player.lifeTimeCount !== 0) {
-        //contador tiempo player,
+        //contador tiempo player desde que choca con enemy, para que no muera de golpe
         this.player.lifeTimeCount--;
       }
 
@@ -65,7 +72,7 @@ const Game = {
           if (this.player.lifeTimeCount == 0) {
             //al chocar, el contador vuelve a 30, por lo que al player no pierde las 3 vidas a la vez(por el interval)
             this.player.lives--;
-            this.player.lifeTimeCount = 30;
+            this.player.lifeTimeCount = 40;
           }
         }
         if (this.enemy.lives == 0) {
@@ -101,6 +108,11 @@ const Game = {
     }
 
     this.platform.draw();
+
+    this.obstacles.forEach(function (obs) {
+      obs.draw();
+    });
+    this.printScore();
 
     this.player.bullets.map((bullet, index) => {
       // si hay colision bullet enemy, se borra la bala y se quita una vida al enemigo
@@ -138,6 +150,25 @@ const Game = {
       }
     });
   },
+
+  generateObstacles() {
+    if (this.framesCounter % 800 === 0) {
+      this.obstacles.push(
+        new Obstacle(
+          this.ctx,
+          this.width,
+          this.player.posY0,
+          this.player.height
+        )
+      );
+    }
+  },
+
+  clearObstacles() {
+    this.obstacles = this.obstacles.filter(function (obs) {
+      return obs.posX >= 150;
+    });
+  },
   gameOver() {
     this.ctx.drawImage(
       this.player.imageGameOver,
@@ -151,7 +182,7 @@ const Game = {
 
   win() {
     this.ctx.drawImage(
-      this.enemy.imageWin,
+      this.enemy.imagewin,
       this.width / 2 - 250,
       200,
       500,
@@ -159,5 +190,13 @@ const Game = {
     );
 
     clearInterval(this.interval);
+  },
+  printScore() {
+    this.ctx.font = "30px Arial";
+    this.ctx.fillText(`${this.score}`, 50, 40);
+  },
+  sumScore() {
+    this.score += 0.01;
+    // no consigo que muestre solo 2 decimales
   },
 };

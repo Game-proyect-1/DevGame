@@ -14,7 +14,7 @@ class Player {
     this.image.frames = 8;
     this.image.framesIndex = 0;
 
-    this.lives = 3;  //imagen vidas
+    this.lives = 6; //imagen vidas
     this.livesImage = new Image();
     this.livesImage.src = "./img/sprites juego/player/life.png";
     this.lifePosX = this.gameWidth - 100;
