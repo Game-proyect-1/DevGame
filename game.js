@@ -11,7 +11,10 @@ const Game = {
   platform: undefined,
   obstacles: [],
   score: 0,
-  backAudio: new Audio("./img/music/finalFantasy.mp4"), // musica
+  backAudio: new Audio("./img/music/sountrack.mp3"),
+  gameoverAudio: new Audio("./img/music/gameover.mp3"),
+  winAudio: new Audio("./img/music/win.mp3"),
+  // backAudio: new Audio("./img/music/disparo.mp3"), // musica
 
   keys: {
     jump: 38,
@@ -80,8 +83,14 @@ const Game = {
       }
 
       //----------
-      if (this.isCollisionObstacles(true)) {
+      // if (this.player.lifeTimeCount == 0) {
+      //   //al chocar, el contador vuelve a 30, por lo que al player no pierde las 3 vidas a la vez(por el interval)
+      //   this.player.lives--;
+      //   this.player.lifeTimeCount = 40;
+      // }
+      if (this.isCollisionObstacles()) {
         this.player.lifeTimeCount = 40;
+        console.log(this.player.lifeTimeCount);
         this.player.lives--;
         if (this.player.lives == 0) {
           this.gameOver();
@@ -195,6 +204,8 @@ const Game = {
       250
     );
     clearInterval(this.interval);
+    this.backAudio.pause();
+    this.gameoverAudio.play();
   },
 
   win() {
@@ -207,6 +218,8 @@ const Game = {
     );
 
     clearInterval(this.interval);
+    this.backAudio.pause();
+    this.winAudio.play();
   },
   printScore() {
     this.ctx.font = "30px Arial";
