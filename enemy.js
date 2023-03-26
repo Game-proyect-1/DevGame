@@ -16,7 +16,7 @@ class Enemy {
     this.lives = 50;
 
     this.imagewin = new Image();
-    this.imagewin.src = "./img/sprites juego/winner.png";
+    this.imagewin.src = "./img/sprites juego/background/win.png";
 
     this.posX = this.gameWidth - this.gameWidth + this.height;
     this.posY = this.gameHeight - this.height * 2.5; //pegado al suelo

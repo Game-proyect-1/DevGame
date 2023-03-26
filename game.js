@@ -17,8 +17,6 @@ const Game = {
   hitAudio: new Audio("./img/music/choque.mp3"),
   hitEnemyAudio: new Audio("./img/music/choque2.mp3"),
 
-  // shootAudio: new Audio("./img/music/disparo.mp3"), // musica
-
   keys: {
     jump: 38,
     shoot: 32,
@@ -85,7 +83,6 @@ const Game = {
         }
         if (this.isCollisionObstacles()) {
           let obs = this.isCollisionObstacles();
-          //al chocar, el contador vuelve a 30, por lo que al player no pierde las 3 vidas a la vez(por el interval)
           //colision obstaculo player
           this.hitAudio.play();
           this.player.lives--;
@@ -197,8 +194,8 @@ const Game = {
       this.player.imageGameOver,
       this.width / 2 - 250,
       200,
-      500,
-      250
+      600,
+      350
     );
     this.backAudio.pause();
     this.gameoverAudio.play();
@@ -206,13 +203,7 @@ const Game = {
   },
 
   win() {
-    this.ctx.drawImage(
-      this.enemy.imagewin,
-      this.width / 2 - 250,
-      200,
-      500,
-      250
-    );
+    this.ctx.drawImage(this.enemy.imagewin, this.width / 2 - 250, 30, 600, 400);
     this.backAudio.pause();
     this.winAudio.play();
     clearInterval(this.interval);

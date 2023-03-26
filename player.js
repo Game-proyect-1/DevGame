@@ -35,14 +35,13 @@ class Player {
     this.lifeTimeCount = 0;
 
     this.keys = keys;
-
     this.bullets = [];
 
     this.setListeners();
     this.velY = 1;
     this.velX = 8;
     this.gravity = 0.6;
-    this.shootAudio = new Audio("./img/music/disparo4.mp3"); // musica
+    this.shootAudio = new Audio("./img/music/fire2.mp3"); // musica
   }
 
   draw(framesCounter) {
