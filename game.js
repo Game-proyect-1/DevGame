@@ -44,8 +44,6 @@ const Game = {
   },
 
   start() {
-    console.log(this.width, this.height);
-
     this.backAudio.play();
     this.reset(); //instancias
 
@@ -218,9 +216,12 @@ const Game = {
     //colision obstaculo player
     return this.obstacles.some((obs) => {
       return (
-        this.player.posX >= obs.posX &&
+        // this.player.posX - this.obs.posX <= 10 &&
+        // this.obs.posX - this.player.posX <= 10 &&
+        // this.player.posY >= this.obs.posY
+        this.player.posX <= obs.posX + obs.width / 2 && // colision derecha
         this.player.posY + this.player.height >= obs.posY &&
-        this.player.posX <= obs.posX + obs.width
+        this.player.posX + this.player.width / 2 >= obs.posX
       );
     });
   },

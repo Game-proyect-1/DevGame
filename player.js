@@ -42,7 +42,7 @@ class Player {
     this.velY = 1;
     this.velX = 8;
     this.gravity = 0.6;
-    this.backAudio = new Audio("./img/music/sountrack.mp3");
+    // this.backAudio = new Audio("./img/music/sountrack.mp3");
   }
 
   draw(framesCounter) {
