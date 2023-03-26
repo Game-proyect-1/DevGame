@@ -203,13 +203,15 @@ const Game = {
     this.winAudio.play();
     clearInterval(this.interval);
   },
-  printScore() {
-    this.ctx.font = "30px Arial";
-    this.ctx.fillText(`${this.score}`, 50, 40);
-  },
+
   sumScore() {
     this.score += 0.01;
     // no consigo que muestre solo 2 decimales
+  },
+
+  printScore() {
+    this.ctx.font = "30px Arial";
+    this.ctx.fillText(`${this.score.toFixed(2)}`, 50, 40);
   },
 
   isCollisionObstacles() {
