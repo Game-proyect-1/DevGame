@@ -61,7 +61,7 @@ const Game = {
 
       this.drawAll(); //pinta todo el canvas
 
-      this.generateObstacles();
+      this.generateObstacles(this.framesCounter);
 
       this.clearObstacles();
       this.sumScore();
@@ -171,7 +171,7 @@ const Game = {
     });
   },
 
-  generateObstacles() {
+  generateObstacles(framesCounter) {
     if (this.framesCounter % 800 === 0) {
       this.obstacles.push(
         new Obstacle(

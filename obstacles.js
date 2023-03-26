@@ -16,6 +16,7 @@ class Obstacle {
   }
 
   draw(framesCounter) {
+    // console.log(framesCounter);
     this.ctx.drawImage(
       this.image,
       (this.image.width / this.image.frames) * this.image.framesIndex,
@@ -27,15 +28,15 @@ class Obstacle {
       this.width,
       this.height
     );
+    this.animate(framesCounter);
     this.move();
-    this.animate();
   }
 
   move() {
-    // Change this.posX (Move horizontally)
     this.posX -= this.velX;
   }
   animate(framesCounter) {
+    console.log("estoy aqui");
     if (framesCounter % 5 == 0) {
       this.image.framesIndex++;
     }
