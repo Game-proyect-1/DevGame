@@ -10,7 +10,7 @@ const Game = {
   enemy: undefined,
   platform: undefined,
   obstacles: [],
-  score: 0,
+  time: 0,
   backAudio: new Audio("./img/music/sountrack.mp3"),
   gameoverAudio: new Audio("./img/music/gameover.mp3"),
   winAudio: new Audio("./img/music/win.mp3"),
@@ -64,7 +64,8 @@ const Game = {
       this.generateObstacles(this.framesCounter);
 
       this.clearObstacles();
-      this.sumScore();
+      this.sumTime();
+      this.checkEnemyStatus();
 
       if (this.player.lives == 0) {
         //si al colisionar tiene 0 vidas, llama GAMEOVER
@@ -134,7 +135,7 @@ const Game = {
     this.obstacles.forEach(function (obs) {
       obs.draw(this.framesCounter);
     });
-    this.printScore();
+    this.printTime();
 
     this.player.bullets.map((bullet, index) => {
       // si hay colision bullet enemy, se borra la bala y se quita una vida al enemigo
@@ -183,16 +184,49 @@ const Game = {
       );
     }
   },
+  
+
+  //Funciones para el enemy
+  checkEnemyStatus() {
+
+    //Función para que el enemy muera al colisionar y vuelva a aparecer
+    if (this.isCollision()) {
+      this.player.lives--;
+      
+      //Para que pinte otro una vez pasado a undefined
+      this.enemy = new Enemy(this.ctx, this.width, this.height);
+      }
+
+    if (this.enemy.posY + this.enemy.height >= window.innerHeight) {
+      //Para que pinte otro una vez pasado a undefined
+      this.enemy = new Enemy(this.ctx, this.width, this.height);
+    }
+  },
+
+  drawText() {
+    this.ctx.font = "100px arial";
+    this.ctx.fillStyle = "white";
+    this.ctx.fillText(`Time: ${Math.floor(this.time)}"`, window.innerWidth/3, window.innerHeight/1.3);
+  },
 
   clearObstacles() {
     this.obstacles = this.obstacles.filter(function (obs) {
       return obs.posX >= 150;
     });
   },
+  
   gameOver() {
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(
+      0,
+      0,
+      window.innerWidth,
+      window.innerHeight,
+    );
+    this.drawText();
     this.ctx.drawImage(
       this.player.imageGameOver,
-      this.width / 2 - 250,
+      window.innerWidth / 3.5,
       200,
       600,
       350
@@ -209,14 +243,14 @@ const Game = {
     clearInterval(this.interval);
   },
 
-  sumScore() {
-    this.score += 0.01;
+  sumTime() {
+    this.time += 0.01;
     // no consigo que muestre solo 2 decimales
   },
 
-  printScore() {
+  printTime() {
     this.ctx.font = "30px Arial";
-    this.ctx.fillText(`${this.score.toFixed(2)}`, 50, 40);
+    this.ctx.fillText(`${Math.floor(this.time)}`, 50, 40);
   },
 
   isCollisionObstacles() {

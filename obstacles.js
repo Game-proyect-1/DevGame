@@ -36,7 +36,7 @@ class Obstacle {
     this.posX -= this.velX;
   }
   animate(framesCounter) {
-    console.log("estoy aqui");
+    
     if (framesCounter % 5 == 0) {
       this.image.framesIndex++;
     }

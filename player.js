@@ -24,9 +24,10 @@ class Player {
     this.imageGameOver = new Image();
     this.imageGameOver.src = "./img/sprites juego/player/gameover.png";
 
-    this.posX = this.gameWidth - this.width * 1.5; //dentro del game donde posicionar al player
-    this.posY = this.gameHeight - this.height * 2.5; //pegado al suelo
+    this.posX = (window.innerWidth * 1.1 - window.innerWidth) + (window.innerWidth / 1.3) - this.width;
+    this.posY = (window.innerHeight / 1.4) - (window.innerHeight / 9);
     this.posY0 = this.posY;
+    this.posX0 = this.posX;
     this.isMoving = false;
 
     this.isStopped = false; //inicializo booleanos
@@ -35,17 +36,17 @@ class Player {
     this.lifeTimeCount = 0;
 
     this.keys = keys;
+
     this.bullets = [];
 
     this.setListeners();
-    this.velY = 1;
+    this.velY = 2;
     this.velX = 8;
     this.gravity = 0.6;
-    this.shootAudio = new Audio("./img/music/fire2.mp3"); // musica
+    // this.backAudio = new Audio("./img/music/sountrack.mp3");
   }
 
   draw(framesCounter) {
-    console.log(framesCounter);
     this.ctx.drawImage(
       this.image,
       (this.image.width / this.image.frames) * this.image.framesIndex,
@@ -103,8 +104,6 @@ class Player {
         case this.keys.left:
           this.stop(false);
           break;
-        case this.keys.shoot:
-          this.shootAudio.pause();
       }
     });
   }
@@ -121,10 +120,6 @@ class Player {
       this.isLookingRigth
     );
     this.bullets.push(bullet); //cuando pulso disparar, agrego una bala al array para que dentro de interval se pinte
-
-    // this.backAudio.pause();
-    this.shootAudio.play();
-    this.shootAudio.volume = 0.5;
   }
   clearBullets() {
     this.bullets = this.bullets.filter((bullet) => {
@@ -160,6 +155,11 @@ class Player {
     this.velY -= 8;
   }
 
+  fall() {
+    this.posY += 80;
+    this.velY += 8;
+  }
+
   stop(isLookingRigth) {
     if (isLookingRigth) {
       this.image.src = "./img/sprites juego/player/quietp.png";
@@ -184,6 +184,13 @@ class Player {
   }
 
   move() {
+
+    if (this.posX >= rightGap) {
+      console.log("ME CAIGO");
+      this.fall();
+    }
+    
+
     if (this.posY < this.posY0) {
       // Está saltando
       this.posY += this.velY;

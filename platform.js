@@ -3,7 +3,7 @@ class Platform {
     this.ctx = ctx;
     this.posX = window.innerWidth * 1.1 - window.innerWidth;
     this.posY = window.innerHeight / 1.4;
-    this.width = window.innerWidth / 1.2;
+    this.width = window.innerWidth/1.3;
     this.height = window.innerHeight / 9;
 
     this.image = new Image();
@@ -20,3 +20,6 @@ class Platform {
     );
   }
 }
+
+const leftGap = (window.innerWidth*1.1) - window.innerWidth;
+const rightGap = (window.innerWidth*1.1) - window.innerWidth + window.innerWidth/1.3;

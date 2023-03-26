@@ -1,0 +1,25 @@
+body {
+                           
+    background-color: #000;
+    background-image: url(./img/sprites juego/background/BACKGROUND 4.png);
+    display: flex;
+            
+}
+
+canvas {
+    width: 90%;
+    height: auto;
+    border: 26px solid #000;
+    
+}
+              
+
+button {
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+    border: 6px solid #000;
+}
+              
+            /* background-image: url("/img/sprites\ juego/background-image"); */
+        
