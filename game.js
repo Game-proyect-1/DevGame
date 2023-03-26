@@ -16,6 +16,7 @@ const Game = {
   winAudio: new Audio("./img/music/win.mp3"),
   hitAudio: new Audio("./img/music/choque.mp3"),
   hitEnemyAudio: new Audio("./img/music/choque2.mp3"),
+
   // shootAudio: new Audio("./img/music/disparo.mp3"), // musica
 
   keys: {
@@ -83,12 +84,18 @@ const Game = {
           this.hitEnemyAudio.play();
         }
         if (this.isCollisionObstacles()) {
+          let obs = this.isCollisionObstacles();
           //al chocar, el contador vuelve a 30, por lo que al player no pierde las 3 vidas a la vez(por el interval)
           //colision obstaculo player
           this.hitAudio.play();
           this.player.lives--;
           this.player.lifeTimeCount = 40;
-          this.player.posX = this.player.posX - 200;
+          if (this.player.posX < obs.posX) {
+            this.player.posX = this.player.posX - 200;
+          } else {
+            this.player.posX = this.player.posX + 200;
+          }
+          // this.player.posX = this.player.posX - 200;
 
           if (this.player.lives == 0) {
             this.gameOver();
@@ -222,12 +229,16 @@ const Game = {
   },
 
   isCollisionObstacles() {
-    return this.obstacles.some((obs) => {
-      return (
+    let obstacle;
+    this.obstacles.forEach((obs) => {
+      if (
         this.player.posX <= obs.posX + obs.width / 2 && // colision derecha
         this.player.posY + this.player.height >= obs.posY &&
         this.player.posX + this.player.width / 2 >= obs.posX
-      );
+      ) {
+        obstacle = obs;
+      }
     });
+    return obstacle; // en un forEach no se puede usar un breack para que salga del break , por eso hay que poner el return por fuera. He cambiado la funcion inicial para que en lugar de true o false devuelva el objeto para poder tener su posicion arriba y hacer el choque hace atrás del player al colisionar.
   },
 };
