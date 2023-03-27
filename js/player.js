@@ -1,26 +1,24 @@
 class Player {
   constructor(ctx, gameW, gameH, keys) {
     this.ctx = ctx;
-
     this.gameWidth = gameW;
-    this.gameHeight = gameH; //medidas canvas
+    this.gameHeight = gameH;
 
-    this.width = 120; //medidas player
+    this.width = 120;
     this.height = 130;
 
-    this.image = new Image(); //imagen  player
+    this.image = new Image();
     this.image.src =
       "./img/sprites juego/player/player quieto derecha.izquierda.png";
     this.image.frames = 8;
     this.image.framesIndex = 0;
 
-    this.lives = 6; //imagen vidas
+    this.lives = 6;
     this.livesImage = new Image();
     this.livesImage.src = "./img/sprites juego/player/life.png";
     this.lifePosX = this.gameWidth - 100;
     this.lifePosY = 0;
 
-    //imagen Game Over PREGUNTAR PORQUE AQUI FUNCIONA Y EN GAME.JS NO
     this.imageGameOver = new Image();
     this.imageGameOver.src = "./img/sprites juego/player/gameover.png";
 
@@ -30,7 +28,7 @@ class Player {
     this.posX0 = this.posX;
     this.isMoving = false;
 
-    this.isStopped = false; //inicializo booleanos
+    this.isStopped = false;
     this.isLookingLeft = false;
     this.isLookingRigth = false;
     this.lifeTimeCount = 0;
@@ -44,6 +42,7 @@ class Player {
     this.velX = 8;
     this.gravity = 0.6;
     // this.backAudio = new Audio("./img/music/sountrack.mp3");
+    this.shootAudio = new Audio("./img/music/fire2.mp3");
   }
 
   draw(framesCounter) {
@@ -61,12 +60,11 @@ class Player {
     this.animate(framesCounter);
 
     this.move();
-    let lookRigth = this.isLookingRigth;
-    //Pintar balas
+
     this.bullets.forEach(function (bullet) {
-      bullet.draw(3);
+      bullet.draw(framesCounter);
     });
-    //Pintar vidas
+
     let lifePosX = this.lifePosX;
     for (let index = 0; index < this.lives; index++) {
       this.ctx.drawImage(this.livesImage, lifePosX, this.lifePosY, 80, 80);
@@ -119,7 +117,9 @@ class Player {
       this.isLookingLeft,
       this.isLookingRigth
     );
-    this.bullets.push(bullet); //cuando pulso disparar, agrego una bala al array para que dentro de interval se pinte
+    this.bullets.push(bullet);
+    this.shootAudio.play();
+    this.shootAudio.volume = 0.5;
   }
   clearBullets() {
     this.bullets = this.bullets.filter((bullet) => {
@@ -128,19 +128,15 @@ class Player {
   }
 
   moveRigth() {
-    // } //por si queremos que de derecha pueda volver al inicio
     this.isStopped = false;
     this.isMoving = true;
     this.isLookingRigth = true;
     this.isLookingLeft = false;
     this.image.src = "./img/sprites juego/player/andarPlayer.png";
     this.image.frames = 15;
-
-    //this.posX += 80;
   }
 
   moveLeft() {
-    // } //por si queremos que de la izquierda pueda volver a la derecha del todo
     this.isStopped = false;
     this.isMoving = true;
     this.isLookingLeft = true;
@@ -184,20 +180,18 @@ class Player {
   }
 
   move() {
-
-    if (this.posX >= rightGap) {
-      console.log("ME CAIGO");
-      this.fall();
-    }
-    
-
-    if (this.posY < this.posY0) {
-      // Está saltando
+    if (this.posX + this.width >= 1320 || this.posX + this.width <= 250) {
       this.posY += this.velY;
-      this.velY += this.gravity; //velocidad caida y frenado paulatino
+      this.velY += this.gravity;
+      this.gameOver();
     } else {
-      this.posY = this.posY0;
-      this.velY = 1;
+      if (this.posY < this.posY0) {
+        this.posY += this.velY;
+        this.velY += this.gravity;
+      } else {
+        this.posY = this.posY0;
+        this.velY = 1;
+      }
     }
 
     if (this.isMoving) {
@@ -206,9 +200,15 @@ class Player {
       }
 
       if (this.isLookingLeft && this.posX + this.width / 2.5 > 0) {
-        //revisar el width /2.5.
         this.posX -= this.velX;
       }
+      //-------//
     }
+  }
+  gameOver() {
+    this.ctx.drawImage(this.imageGameOver, this.width / 600, 200, 700, 350); // Falta responsive!
+    this.backAudio.pause();
+    this.gameoverAudio.play();
+    clearInterval(this.interval);
   }
 }

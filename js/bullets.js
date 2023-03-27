@@ -12,8 +12,7 @@ class Bullets {
     this.ctx = ctx;
 
     this.posX = playerPosX;
-    this.posY = playerPosY + playerHeight * 0.5; //mitad del player
-
+    this.posY = playerPosY + playerHeight * 0.5;
     this.playerPosY0 = playerPosY0;
     this.playerHeight = playerHeight;
 
@@ -36,7 +35,6 @@ class Bullets {
   }
 
   draw(framesCounter) {
-    //cada vez que en game llamo a draw, pinta, animate con frames y se mueve
     this.ctx.drawImage(
       this.image,
       (this.image.width / this.image.frames) * this.image.framesIndex,
@@ -80,7 +78,7 @@ class Bullets {
 
   isCollisionBullet(posX, posY) {
     return (
-      this.posX - posX <= 50 && posX - this.posX <= 50 && this.posY >= posY // es la posicion del enemy menos la posicion de la bala, si restadas dan menos, es que se han chocado
+      this.posX - posX <= 50 && posX - this.posX <= 50 && this.posY >= posY
     );
   }
 }
