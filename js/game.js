@@ -230,7 +230,7 @@ const Game = {
     this.ctx.font = "100px arial";
     this.ctx.fillStyle = "white";
     // Este es el de arriba
-    this.ctx.fillText(`Final Score: ${Math.floor(this.time)+(this.score)}`, window.innerWidth/3, window.innerHeight*0.12);
+    this.ctx.fillText(`Final Score: ${Math.floor(this.time)+(this.score)}`, window.innerWidth-900, window.innerHeight*0.12);
   },
 
   clearObstacles() {
@@ -266,7 +266,7 @@ const Game = {
 
   win() {
     this.score += 250;
-    this.ctx.drawImage(this.enemy.imagewin, this.width / 2 - 250, 30, 600, 400);
+    this.ctx.drawImage(this.enemy.imagewin, this.width / 2 - 250, 100, 600, 400);
     this.backAudio.pause();
     this.winAudio.play();
     this.ctx.fillStyle = "black";
@@ -274,7 +274,7 @@ const Game = {
       0,
       0,
       window.innerWidth,
-      window.innerHeight*0.1,
+      window.innerHeight*0.2,
     );
     this.drawText();
     const btn = document.createElement("button");
@@ -353,9 +353,11 @@ const Game = {
 },
   
   printScore() {
+    
     this.ctx.font = "60px Montserrat";
     this.ctx.fillStyle = "black";
-    this.ctx.fillText(`SCORE:`, window.innerWidth/2 - 40, window.innerHeight*0.1);
+    this.ctx.fillText(`SCORE:`, window.innerWidth/2 - 60, window.innerHeight*0.1);
     this.ctx.fillText(`${this.score}`, window.innerWidth/2 - 40, window.innerHeight*0.15);
+
   }
-};
+}

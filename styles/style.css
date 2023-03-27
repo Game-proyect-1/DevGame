@@ -12,42 +12,53 @@ canvas {
 }
 
 div {
-    display: flexbox;
+    display: flex;
 }
 
 .inicio {
     position:absolute;
-    left:20px;
-    bottom: 20px;
-    width: 200px;
-    height: 200px;
+    left: 380px;
+    bottom: 54px;
+    width: 220px;
+    height: 140px;
+    color: white;
+    background-color: red;
     margin-right: 20px;
-    border: 6px solid #000;
-    font-size: 1rem;
+    border: 6px solid #fff;
+    border-radius: 120px;
+    font-size: 2rem;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .winner {
     position:absolute;
-    left:20px;
-    top: 20px;
-    width: 200px;
-    height: 60px;
+    left:40px;
+    top: 40px;
+    width: 140px;
+    height: 140px;
+    color: white;
+    background-color: red;
+    border-radius: 120px;
     margin-right: 20px;
-    border: 6px solid #000;
+    border: 6px solid #fff;
     font-size: 1rem;
+    font-weight: 500;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .gameover {
     position:absolute;
-    left:48%;
-    top: 55%;
-    width: 200px;
-    height: 50px;
+    left: 50%-70px;
+    top: 50%-70px;
+    width: 140px;
+    height: 140px;
+    color: white;
+    background-color: red;
+    border-radius: 120px;
     margin-right: 20px;
-    border: 6px solid #000;
+    border: 6px solid #fff;
     font-size: 1rem;
+    font-weight: 500;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
@@ -73,6 +84,6 @@ button {
 
 img {
     width: auto;
-    height: 1100px;
+    height:960px;
 }
         
