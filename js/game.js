@@ -166,7 +166,7 @@ const Game = {
       }
     });
   },
-  
+
   generateObstacles(framesCounter) {
     if (this.framesCounter % 800 === 0) {
       this.obstacles.push(
@@ -179,26 +179,22 @@ const Game = {
       );
     }
   },
-  
 
   //Funciones para el enemy
   checkEnemyStatus() {
-
     //Función para que el enemy muera al colisionar y vuelva a aparecer
     if (this.isCollision()) {
       this.player.lives--;
       this.score -= 10;
-      
-      //Para que pinte otro una vez pasado a undefined
-      this.enemy = new Enemy(this.ctx, this.width, this.height);
-      }
 
-    if (this.enemy.posY + this.enemy.height >= window.innerHeight) {
       //Para que pinte otro una vez pasado a undefined
       this.enemy = new Enemy(this.ctx, this.width, this.height);
     }
 
-    else {
+    if (this.enemy.posY + this.enemy.height >= window.innerHeight) {
+      //Para que pinte otro una vez pasado a undefined
+      this.enemy = new Enemy(this.ctx, this.width, this.height);
+    } else {
       this.score++;
     }
   },
@@ -209,7 +205,7 @@ const Game = {
     }
 
     if (this.isCollisionBullet()) {
-      console.log("BUM")
+      console.log("BUM");
     }
   },
 
@@ -217,7 +213,11 @@ const Game = {
     this.ctx.font = "100px arial";
     this.ctx.fillStyle = "white";
     // Este es el de arriba
-    this.ctx.fillText(`Final Score: ${Math.floor(this.time)+(this.score)}`, window.innerWidth-900, window.innerHeight*0.12);
+    this.ctx.fillText(
+      `Final Score: ${Math.floor(this.time) + this.score}`,
+      window.innerWidth - 900,
+      window.innerHeight * 0.12
+    );
   },
 
   clearObstacles() {
@@ -225,15 +225,10 @@ const Game = {
       return obs.posX >= 150;
     });
   },
-  
+
   gameOver() {
     this.ctx.fillStyle = "black";
-    this.ctx.fillRect(
-      0,
-      0,
-      window.innerWidth,
-      window.innerHeight*0.2,
-    );
+    this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight * 0.2);
     this.drawText();
     this.ctx.drawImage(
       this.player.imageGameOver,
@@ -247,22 +242,22 @@ const Game = {
     this.backAudio.pause();
     this.gameoverAudio.play();
     clearInterval(this.interval);
-    // Esto refresca la página nada más perder, aunque le metamos los 5 segundos de dlay...
-    // this.setInterval(location.reload(), 5000);
+ 
   },
 
   win() {
     this.score += 250;
-    this.ctx.drawImage(this.enemy.imagewin, this.width / 2 - 250, 100, 600, 400);
+    this.ctx.drawImage(
+      this.enemy.imagewin,
+      this.width / 2 - 250,
+      100,
+      600,
+      400
+    );
     this.backAudio.pause();
     this.winAudio.play();
     this.ctx.fillStyle = "black";
-    this.ctx.fillRect(
-      0,
-      0,
-      window.innerWidth,
-      window.innerHeight*0.2,
-    );
+    this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight * 0.2);
     this.drawText();
     const btn = document.createElement("button");
     document.body.appendChild(btn);
@@ -270,15 +265,15 @@ const Game = {
     btn.setAttribute("id", "go");
     btn.setAttribute("class", "winner");
     document.getElementById("go").onclick = () => {
-      location.reload()
-  }
+      location.reload();
+    };
     clearInterval(this.interval);
   },
 
   sumTime() {
     this.time += 0.01;
   },
-    // no consigo que muestre solo 2 decimales
+  // no consigo que muestre solo 2 decimales
   sumScore() {
     this.score += 0.01;
   },
@@ -286,20 +281,21 @@ const Game = {
   //U
   printTime() {
     this.ctx.font = "60px Montserrat";
-    if (this.time>= 60) {
+    if (this.time >= 60) {
       this.min++;
       this.time = 0;
     }
-    if (this.min ===60) {
+    if (this.min === 60) {
       this.hour++;
       this.min = 0;
     }
-    let duration = `${Number(this.hour)}:${Number(this.min)}:${Number(Math.floor(this.time))}`;
-    this.ctx.fillText(`⏱ ${duration}`, 75, window.innerHeight*0.1);
+    let duration = `${Number(this.hour)}:${Number(this.min)}:${Number(
+      Math.floor(this.time)
+    )}`;
+    this.ctx.fillText(`⏱ ${duration}`, 75, window.innerHeight * 0.1);
   },
 
   addSecond() {
-    
     this.time++;
     if (this.time === 60) {
       this.time = 0;
@@ -336,18 +332,24 @@ const Game = {
     document.body.appendChild(btn);
     btn.innerHTML = "Volver a intentar";
     btn.setAttribute("id", "go");
-    btn.setAttribute("class", "gameover")
+    btn.setAttribute("class", "gameover");
     document.getElementById("go").onclick = () => {
-      location.reload()
-  }
-},
-  
+      location.reload();
+    };
+  },
+
   printScore() {
-    
     this.ctx.font = "60px Montserrat";
     this.ctx.fillStyle = "black";
-    this.ctx.fillText(`SCORE:`, window.innerWidth/2 - 60, window.innerHeight*0.1);
-    this.ctx.fillText(`${this.score}`, window.innerWidth/2 - 40, window.innerHeight*0.15);
-
-  }
-}
+    this.ctx.fillText(
+      `SCORE:`,
+      window.innerWidth / 2 - 60,
+      window.innerHeight * 0.1
+    );
+    this.ctx.fillText(
+      `${this.score}`,
+      window.innerWidth / 2 - 40,
+      window.innerHeight * 0.15
+    );
+  },
+};

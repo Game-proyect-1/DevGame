@@ -1,8 +1,3 @@
-// this.posX = window.innerWidth * 1.1 - window.innerWidth;
-//     this.posY = window.innerHeight / 1.4;
-//     this.width = window.innerWidth / 1.2;
-//     this.height = window.innerHeight / 9;
-
 class Enemy {
   constructor(ctx, gameW, gameH) {
     this.ctx = ctx;
@@ -28,8 +23,8 @@ class Enemy {
     this.imagewin = new Image();
     this.imagewin.src = "./img/sprites juego/background/win.png";
 
-    this.posX = window.innerWidth * 1.1 - window.innerWidth;
-    this.posY = (window.innerHeight / 1.4) - (window.innerHeight / 9);
+    this.posX = this.gameWidth - this.gameWidth + this.height;
+    this.posY = this.gameHeight - this.height * 2.5;
     this.posY0 = this.posY;
     this.posX0 = this.posX;
     this.isMovingRight = true;
@@ -37,7 +32,6 @@ class Enemy {
     this.isDead = false;
 
     this.velX = 2;
-    this.velY = 0;
     this.aceleration = 0.002;
   }
 
@@ -110,9 +104,6 @@ class Enemy {
           this.posX = this.posX - this.velX;
         }
       }
-    }
-    if (this.posX + this.width >= rightGap) {
-      this.posY += (this.velY+1)*10;
     }
   }
 }

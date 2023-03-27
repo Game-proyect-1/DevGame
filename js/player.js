@@ -22,8 +22,12 @@ class Player {
     this.imageGameOver = new Image();
     this.imageGameOver.src = "./img/sprites juego/player/gameover.png";
 
-    this.posX = (window.innerWidth * 1.1 - window.innerWidth) + (window.innerWidth / 1.3) - this.width;
-    this.posY = (window.innerHeight / 1.4) - (window.innerHeight / 9);
+    this.posX =
+      window.innerWidth * 1.1 -
+      window.innerWidth +
+      window.innerWidth / 1.3 -
+      this.width;
+    this.posY = window.innerHeight / 1.4 - window.innerHeight / 9;
     this.posY0 = this.posY;
     this.posX0 = this.posX;
     this.isMoving = false;
@@ -206,9 +210,15 @@ class Player {
     }
   }
   gameOver() {
-    this.ctx.drawImage(this.imageGameOver, this.width / 600, 200, 700, 350); // Falta responsive!
+    this.ctx.drawImage(
+      this.imageGameOver,
+      this.gameWidth / 3,
+      this.gameHeight / 3.5,
+      600,
+      350
+    );
     this.backAudio.pause();
-    this.gameoverAudio.play();
+    this.game.gameoverAudio.play();
     clearInterval(this.interval);
   }
 }
