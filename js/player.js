@@ -17,8 +17,8 @@ class Player {
     this.lives = 6; //imagen vidas
     this.livesImage = new Image();
     this.livesImage.src = "./img/sprites juego/player/life.png";
-    this.lifePosX = this.gameWidth - 100;
-    this.lifePosY = 0;
+    this.lifePosX = this.gameWidth - 200;
+    this.lifePosY = window.innerHeight - 160;
 
     //imagen Game Over PREGUNTAR PORQUE AQUI FUNCIONA Y EN GAME.JS NO
     this.imageGameOver = new Image();

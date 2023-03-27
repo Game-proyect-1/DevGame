@@ -48,8 +48,8 @@ div {
 
 .gameover {
     position:absolute;
-    left: 50%-70px;
-    top: 50%-70px;
+    left: 40px;
+    top: 40px;
     width: 140px;
     height: 140px;
     color: white;

@@ -305,7 +305,7 @@ const Game = {
       this.min = 0;
     }
     let duration = `${Number(this.hour)}:${Number(this.min)}:${Number(Math.floor(this.time))}`;
-    this.ctx.fillText(`⏱ ${duration}`, 75, window.innerHeight*0.1);
+    this.ctx.fillText(`⏱ ${duration}`, 75, window.innerHeight*0.9);
   },
 
   addSecond() {
@@ -356,8 +356,8 @@ const Game = {
     
     this.ctx.font = "60px Montserrat";
     this.ctx.fillStyle = "black";
-    this.ctx.fillText(`SCORE:`, window.innerWidth/2 - 60, window.innerHeight*0.1);
-    this.ctx.fillText(`${this.score}`, window.innerWidth/2 - 40, window.innerHeight*0.15);
+    // this.ctx.fillText(`SCORE:`, window.innerWidth/2 - 60, window.innerHeight*0.9 -100);
+    this.ctx.fillText(`SCORE: ${this.score}`, window.innerWidth/2 - 200, window.innerHeight*0.9);
 
   }
 }
