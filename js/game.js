@@ -11,6 +11,9 @@ const Game = {
   platform: undefined,
   obstacles: [],
   time: 0,
+  min: 0,
+  hour: 0,
+  score: 0,
   backAudio: new Audio("./img/music/sountrack.mp3"),
   gameoverAudio: new Audio("./img/music/gameover.mp3"),
   winAudio: new Audio("./img/music/win.mp3"),
@@ -55,6 +58,7 @@ const Game = {
       this.framesCounter++;
       if (this.framesCounter > 5000) {
         this.framesCounter = 0;
+        this.stime++;
       }
 
       this.clear(); //borra todo el canvas
@@ -65,7 +69,11 @@ const Game = {
 
       this.clearObstacles();
       this.sumTime();
+      this.printScore();
       this.checkEnemyStatus();
+      this.checkPlayerStatus();
+      this.addSecond();
+      this.printTime();
 
       if (this.player.lives == 0) {
         //si al colisionar tiene 0 vidas, llama GAMEOVER
@@ -171,7 +179,7 @@ const Game = {
       }
     });
   },
-
+  
   generateObstacles(framesCounter) {
     if (this.framesCounter % 800 === 0) {
       this.obstacles.push(
@@ -192,6 +200,7 @@ const Game = {
     //Función para que el enemy muera al colisionar y vuelva a aparecer
     if (this.isCollision()) {
       this.player.lives--;
+      this.score -= 10;
       
       //Para que pinte otro una vez pasado a undefined
       this.enemy = new Enemy(this.ctx, this.width, this.height);
@@ -201,12 +210,27 @@ const Game = {
       //Para que pinte otro una vez pasado a undefined
       this.enemy = new Enemy(this.ctx, this.width, this.height);
     }
+
+    else {
+      this.score++;
+    }
+  },
+
+  checkPlayerStatus() {
+    if (this.player.lives <= 0) {
+      this.gameOver();
+    }
+
+    if (this.isCollisionBullet()) {
+      console.log("BUM")
+    }
   },
 
   drawText() {
     this.ctx.font = "100px arial";
     this.ctx.fillStyle = "white";
-    this.ctx.fillText(`Time: ${Math.floor(this.time)}"`, window.innerWidth/3, window.innerHeight/1.3);
+    // Este es el de arriba
+    this.ctx.fillText(`Final Score: ${Math.floor(this.time)+(this.score)}`, window.innerWidth/3, window.innerHeight*0.12);
   },
 
   clearObstacles() {
@@ -221,25 +245,46 @@ const Game = {
       0,
       0,
       window.innerWidth,
-      window.innerHeight,
+      window.innerHeight*0.2,
     );
     this.drawText();
     this.ctx.drawImage(
       this.player.imageGameOver,
-      window.innerWidth / 3.5,
-      200,
+      window.innerWidth / 2.8,
+      260,
       600,
       350
     );
+    this.duration = "";
+    this.printResult();
     this.backAudio.pause();
     this.gameoverAudio.play();
     clearInterval(this.interval);
+    // Esto refresca la página nada más perder, aunque le metamos los 5 segundos de dlay...
+    // this.setInterval(location.reload(), 5000);
   },
 
   win() {
+    this.score += 250;
     this.ctx.drawImage(this.enemy.imagewin, this.width / 2 - 250, 30, 600, 400);
     this.backAudio.pause();
     this.winAudio.play();
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(
+      0,
+      0,
+      window.innerWidth,
+      window.innerHeight*0.1,
+    );
+    this.drawText();
+    const btn = document.createElement("button");
+    document.body.appendChild(btn);
+    btn.innerHTML = "Jugar otra vez";
+    btn.setAttribute("id", "go");
+    btn.setAttribute("class", "winner");
+    document.getElementById("go").onclick = () => {
+      location.reload()
+  }
     clearInterval(this.interval);
   },
 
@@ -248,9 +293,28 @@ const Game = {
     // no consigo que muestre solo 2 decimales
   },
 
+  //U
   printTime() {
-    this.ctx.font = "30px Arial";
-    this.ctx.fillText(`${Math.floor(this.time)}`, 50, 40);
+    this.ctx.font = "60px Montserrat";
+    if (this.time>= 60) {
+      this.min++;
+      this.time = 0;
+    }
+    if (this.min ===60) {
+      this.hour++;
+      this.min = 0;
+    }
+    let duration = `${Number(this.hour)}:${Number(this.min)}:${Number(Math.floor(this.time))}`;
+    this.ctx.fillText(`⏱ ${duration}`, 75, window.innerHeight*0.1);
+  },
+
+  addSecond() {
+    
+    this.time++;
+    if (this.time === 60) {
+      this.time = 0;
+      this.min++;
+    }
   },
 
   isCollisionObstacles() {
@@ -266,4 +330,32 @@ const Game = {
     });
     return obstacle; // en un forEach no se puede usar un breack para que salga del break , por eso hay que poner el return por fuera. He cambiado la funcion inicial para que en lugar de true o false devuelva el objeto para poder tener su posicion arriba y hacer el choque hace atrás del player al colisionar.
   },
+
+  isCollisionBullet(posX, posY) {
+    return (
+      this.posX - posX <= 50 && posX - this.posX <= 50 && this.posY >= posY // es la posicion del enemy menos la posicion de la bala, si restadas dan menos, es que se han chocado
+    );
+  },
+
+  printResult() {
+    // this.ctx.font = '76px Arial';
+    // this.ctx.fillStyle = "white";
+    // this.ctx.fillText(`SCORE:`, window.innerWidth/2-100, window.innerHeight/1.4);
+    // this.ctx.fillText(`${this.score}`, window.innerWidth/2-50, window.innerHeight/1.3+100);
+    const btn = document.createElement("button");
+    document.body.appendChild(btn);
+    btn.innerHTML = "Volver a intentar";
+    btn.setAttribute("id", "go");
+    btn.setAttribute("class", "gameover")
+    document.getElementById("go").onclick = () => {
+      location.reload()
+  }
+},
+  
+  printScore() {
+    this.ctx.font = "60px Montserrat";
+    this.ctx.fillStyle = "black";
+    this.ctx.fillText(`SCORE:`, window.innerWidth/2 - 40, window.innerHeight*0.1);
+    this.ctx.fillText(`${this.score}`, window.innerWidth/2 - 40, window.innerHeight*0.15);
+  }
 };
