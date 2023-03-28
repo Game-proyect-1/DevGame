@@ -184,10 +184,11 @@ class Player {
   }
 
   move() {
-    if (this.posX + this.width >= 1320 || this.posX + this.width <= 250) {
+    if (this.posX + this.width < platformStart || this.posX > platformEnd ) {
       this.posY += this.velY;
       this.velY += this.gravity;
       this.gameOver();
+
     } else {
       if (this.posY < this.posY0) {
         this.posY += this.velY;
@@ -206,7 +207,7 @@ class Player {
       if (this.isLookingLeft && this.posX + this.width / 2.5 > 0) {
         this.posX -= this.velX;
       }
-      //-------//
+
     }
   }
   gameOver() {

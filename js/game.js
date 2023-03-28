@@ -209,14 +209,14 @@ const Game = {
     }
   },
 
+  // Si quito la función drawText, no funciona gameOver()
   drawText() {
     this.ctx.font = "100px arial";
     this.ctx.fillStyle = "white";
-    // Este es el de arriba
     this.ctx.fillText(
       `Final Score: ${Math.floor(this.time) + this.score}`,
-      window.innerWidth - 900,
-      window.innerHeight * 0.12
+      window.innerWidth / 2 - window.innerWidth / 6,
+      window.innerHeight * 0.14,
     );
   },
 
@@ -229,7 +229,6 @@ const Game = {
   gameOver() {
     this.ctx.fillStyle = "black";
     this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight * 0.2);
-    this.drawText();
     this.ctx.drawImage(
       this.player.imageGameOver,
       window.innerWidth / 2.8,
@@ -237,11 +236,11 @@ const Game = {
       600,
       350
     );
-    this.duration = "";
-    this.printResult();
+    this.printRetryBtn();
     this.backAudio.pause();
     this.gameoverAudio.play();
     clearInterval(this.interval);
+    this.drawText();
  
   },
 
@@ -321,11 +320,7 @@ const Game = {
     );
   },
 
-  printResult() {
-    // this.ctx.font = '76px Arial';
-    // this.ctx.fillStyle = "white";
-    // this.ctx.fillText(`SCORE:`, window.innerWidth/2-100, window.innerHeight/1.4);
-    // this.ctx.fillText(`${this.score}`, window.innerWidth/2-50, window.innerHeight/1.3+100);
+  printRetryBtn() {
     const btn = document.createElement("button");
     document.body.appendChild(btn);
     btn.innerHTML = "Volver a intentar";

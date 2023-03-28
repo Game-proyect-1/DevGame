@@ -21,6 +21,7 @@ class Platform {
   }
 }
 
-const leftGap = window.innerWidth * 1.1 - window.innerWidth;
-const rightGap =
-  window.innerWidth * 1.1 - window.innerWidth + window.innerWidth / 1.3;
+// const leftGap = window.innerWidth * 1.1 - window.innerWidth;
+// const rightGap = window.innerWidth * 1.1 - window.innerWidth + window.innerWidth / 1.3;
+const platformStart = this.posX;
+const platformEnd = this.posX + this.width;
