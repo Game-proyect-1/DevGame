@@ -24,7 +24,7 @@ class Enemy {
     this.imagewin.src = "./img/sprites juego/background/win.png";
 
     this.posX = this.gameWidth - this.gameWidth + this.height;
-    this.posY = this.gameHeight - this.height * 2.5;
+    this.posY = window.innerHeight / 1.35 - window.innerHeight / 9;
     this.posY0 = this.posY;
     this.posX0 = this.posX;
     this.isMovingRight = true;

@@ -27,7 +27,7 @@ class Player {
       window.innerWidth +
       window.innerWidth / 1.3 -
       this.width;
-    this.posY = window.innerHeight / 1.4 - window.innerHeight / 9;
+    this.posY = window.innerHeight / 1.35 - window.innerHeight / 9;
     this.posY0 = this.posY;
     this.posX0 = this.posX;
     this.isMoving = false;

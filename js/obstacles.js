@@ -3,10 +3,10 @@ class Obstacle {
   constructor(ctx, gameWidth, playerPosY0, playerHeight) {
     this.ctx = ctx;
     this.width = 100;
-    this.height = this.width * 1;
+    this.height = this.width;
 
     this.posX = (window.innerWidth * 1.1 - window.innerWidth) + (window.innerWidth / 1.3) - this.width;
-    this.posY = playerPosY0 + playerHeight - this.height;
+    this.posY = window.innerHeight / 1.35 - window.innerHeight / 9 + 30;
 
     this.velX = 1;
     this.image = new Image();
