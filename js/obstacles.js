@@ -1,5 +1,5 @@
 class Obstacle {
-  // porque los obstaculos tardan tanto en empezar a generarse
+ 
   constructor(ctx, gameWidth, playerPosY0, playerHeight) {
     this.ctx = ctx;
     this.width = 100;
@@ -16,7 +16,7 @@ class Obstacle {
   }
 
   draw(framesCounter) {
-    // console.log(framesCounter);
+    
     this.ctx.drawImage(
       this.image,
       (this.image.width / this.image.frames) * this.image.framesIndex,

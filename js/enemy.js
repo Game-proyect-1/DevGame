@@ -1,8 +1,3 @@
-// this.posX = window.innerWidth * 1.1 - window.innerWidth;
-//     this.posY = window.innerHeight / 1.4;
-//     this.width = window.innerWidth / 1.2;
-//     this.height = window.innerHeight / 9;
-
 class Enemy {
   constructor(ctx, gameW, gameH) {
     this.ctx = ctx;
@@ -18,58 +13,97 @@ class Enemy {
     this.image.frames = 16;
     this.image.framesIndex = 0;
 
-    this.lives = 50;
+    this.imageLeft = new Image();
+    this.imageLeft.src = "./img/sprites juego/enemy/enemywalkderecha.png";
+    this.imageLeft.frames = 16;
+    this.imageLeft.framesIndex = 0;
+
+    this.lives = 150;
 
     this.imagewin = new Image();
     this.imagewin.src = "./img/sprites juego/background/win.png";
 
-    this.posX = window.innerWidth * 1.1 - window.innerWidth;
-    this.posY = (window.innerHeight / 1.4) - (window.innerHeight / 9);
+    this.posX = this.gameWidth - this.gameWidth + this.height;
+    this.posY = this.gameHeight - this.height * 2.5;
     this.posY0 = this.posY;
     this.posX0 = this.posX;
-    this.isMovingRight = false;
+    this.isMovingRight = true;
     this.isMovingLeft = false;
     this.isDead = false;
 
     this.velX = 2;
-    this.velY = 0;
     this.aceleration = 0.002;
   }
 
   draw(framesCounter) {
-    this.ctx.drawImage(
-      this.image,
-      (this.image.width / this.image.frames) * this.image.framesIndex,
-      0,
-      this.image.width / this.image.frames,
-      this.image.height,
-      this.posX,
-      this.posY,
-      this.width,
-      this.height
-    );
+    if (this.isMovingRight)
+      this.ctx.drawImage(
+        this.image,
+        (this.image.width / this.image.frames) * this.image.framesIndex,
+        0,
+        this.image.width / this.image.frames,
+        this.image.height,
+        this.posX,
+        this.posY,
+        this.width,
+        this.height
+      );
+    if (this.isMovingLeft)
+      this.ctx.drawImage(
+        this.imageLeft,
+        (this.imageLeft.width / this.imageLeft.frames) *
+          this.imageLeft.framesIndex,
+        0,
+        this.imageLeft.width / this.imageLeft.frames,
+        this.imageLeft.height,
+        this.posX,
+        this.posY,
+        this.width,
+        this.height
+      );
 
     this.animate(framesCounter);
 
     this.move();
   }
   animate(framesCounter) {
-    if (framesCounter % 5 == 0) {
+    if (framesCounter % 5 == 0 && this.isMovingRight) {
       this.image.framesIndex++;
     }
-
+    if (framesCounter % 5 == 0 && this.isMovingLeft) {
+      this.imageLeft.framesIndex++;
+    }
     if (this.image.framesIndex >= this.image.frames) {
       this.image.framesIndex = 0;
+    }
+    if (this.imageLeft.framesIndex >= this.imageLeft.frames) {
+      this.imageLeft.framesIndex = 0;
     }
   }
   move() {
     this.velX += this.aceleration;
-    this.posX += this.velX;
-    if (this.posX + this.width >= this.gameWidth) {
-      this.posX = this.posX0;
-    }
-    if (this.posX + this.width >= rightGap) {
-      this.posY += (this.velY+1)*10;
+    if (
+      this.isMovingRight &&
+      this.posX + this.width >= window.innerWidth / 1.1
+    ) {
+      this.posX = this.posX - this.velX;
+      this.isMovingLeft = true;
+      this.isMovingRight = false;
+    } else {
+      if (
+        this.isMovingLeft &&
+        this.posX + this.width <= window.innerWidth / 2 - window.innerWidth / 3
+      ) {
+        this.posX = this.posX + this.velX;
+        this.isMovingRight = true;
+        this.isMovingLeft = false;
+      } else {
+        if (this.isMovingRight) {
+          this.posX = this.posX + this.velX;
+        } else {
+          this.posX = this.posX - this.velX;
+        }
+      }
     }
   }
 }

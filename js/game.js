@@ -51,19 +51,18 @@ const Game = {
     this.backAudio.preload = "auto";
     this.backAudio.play();
     this.backAudio.volume = 0.2;
-    this.reset(); //instancias
+    this.reset();
 
     this.interval = setInterval(() => {
-      // intervalo
       this.framesCounter++;
       if (this.framesCounter > 5000) {
         this.framesCounter = 0;
         this.stime++;
       }
 
-      this.clear(); //borra todo el canvas
+      this.clear();
 
-      this.drawAll(); //pinta todo el canvas
+      this.drawAll();
 
       this.generateObstacles(this.framesCounter);
 
@@ -76,32 +75,28 @@ const Game = {
       this.printTime();
 
       if (this.player.lives == 0) {
-        //si al colisionar tiene 0 vidas, llama GAMEOVER
         this.gameOver();
       }
 
       if (this.player.lifeTimeCount !== 0) {
-        //contador tiempo player desde que choca con enemy, para que no muera de golpe
         this.player.lifeTimeCount--;
       } else {
         if (this.isCollision()) {
-          //al chocar, el contador vuelve a 30, por lo que al player no pierde las 3 vidas a la vez(por el interval)
           this.player.lives--;
           this.player.lifeTimeCount = 40;
           this.hitEnemyAudio.play();
         }
         if (this.isCollisionObstacles()) {
           let obs = this.isCollisionObstacles();
-          //colision obstaculo player
+
           this.hitAudio.play();
           this.player.lives--;
           this.player.lifeTimeCount = 40;
           if (this.player.posX < obs.posX) {
-            this.player.posX = this.player.posX - 200;
+            this.player.posX = this.player.posX - 120;
           } else {
-            this.player.posX = this.player.posX + 200;
+            this.player.posX = this.player.posX + 120;
           }
-          // this.player.posX = this.player.posX - 200;
 
           if (this.player.lives == 0) {
             this.gameOver();
@@ -112,21 +107,15 @@ const Game = {
       //--------
     }, 1000 / this.FPS);
 
-    this.clearBullets(); //quitar balas fuera de pantalla
+    this.clearBullets();
   },
 
   reset() {
-    //instancias
     this.background = new Background(this.ctx, this.width, this.height);
 
     this.player = new Player(this.ctx, this.width, this.height, this.keys);
     this.enemy = new Enemy(this.ctx, this.width, this.height);
-    this.platform = new Platform(
-      this.ctx,
-      this.width,
-      this.height,
-      this.player.posX
-    );
+    this.platform = new Platform(this.ctx);
     this.obstacles = [];
   },
 
@@ -139,20 +128,19 @@ const Game = {
     }
 
     this.platform.draw();
-
+    let framesCounterObstacles = this.framesCounter;
     this.obstacles.forEach(function (obs) {
-      obs.draw(this.framesCounter);
+      obs.draw(framesCounterObstacles);
     });
     this.printTime();
 
     this.player.bullets.map((bullet, index) => {
-      // si hay colision bullet enemy, se borra la bala y se quita una vida al enemigo
       if (bullet.isCollisionBullet(this.enemy.posX, this.enemy.posY)) {
         this.player.bullets.splice(index, 1);
         this.enemy.lives--;
         if (this.enemy.lives == 0) {
           this.enemy.isDead = true;
-          this.win(); // pantalla WIN
+          this.win();
         }
       }
     });
@@ -171,7 +159,6 @@ const Game = {
   },
 
   clearBullets() {
-    // se borra la bala que colisiona con el enemy
     this.player.bullets = this.player.bullets.map((bullet) => {
       if (this.isCollision) {
         let bulletCollision = this.player.bullets.indexOf(bullet);
@@ -179,7 +166,7 @@ const Game = {
       }
     });
   },
-  
+
   generateObstacles(framesCounter) {
     if (this.framesCounter % 800 === 0) {
       this.obstacles.push(
@@ -192,26 +179,22 @@ const Game = {
       );
     }
   },
-  
 
   //Funciones para el enemy
   checkEnemyStatus() {
-
     //Función para que el enemy muera al colisionar y vuelva a aparecer
     if (this.isCollision()) {
       this.player.lives--;
       this.score -= 10;
-      
-      //Para que pinte otro una vez pasado a undefined
-      this.enemy = new Enemy(this.ctx, this.width, this.height);
-      }
 
-    if (this.enemy.posY + this.enemy.height >= window.innerHeight) {
       //Para que pinte otro una vez pasado a undefined
       this.enemy = new Enemy(this.ctx, this.width, this.height);
     }
 
-    else {
+    if (this.enemy.posY + this.enemy.height >= window.innerHeight) {
+      //Para que pinte otro una vez pasado a undefined
+      this.enemy = new Enemy(this.ctx, this.width, this.height);
+    } else {
       this.score++;
     }
   },
@@ -222,7 +205,7 @@ const Game = {
     }
 
     if (this.isCollisionBullet()) {
-      console.log("BUM")
+      console.log("BUM");
     }
   },
 
@@ -230,7 +213,11 @@ const Game = {
     this.ctx.font = "100px arial";
     this.ctx.fillStyle = "white";
     // Este es el de arriba
-    this.ctx.fillText(`Final Score: ${Math.floor(this.time)+(this.score)}`, window.innerWidth-900, window.innerHeight*0.12);
+    this.ctx.fillText(
+      `Final Score: ${Math.floor(this.time) + this.score}`,
+      window.innerWidth - 900,
+      window.innerHeight * 0.12
+    );
   },
 
   clearObstacles() {
@@ -238,15 +225,10 @@ const Game = {
       return obs.posX >= 150;
     });
   },
-  
+
   gameOver() {
     this.ctx.fillStyle = "black";
-    this.ctx.fillRect(
-      0,
-      0,
-      window.innerWidth,
-      window.innerHeight*0.2,
-    );
+    this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight * 0.2);
     this.drawText();
     this.ctx.drawImage(
       this.player.imageGameOver,
@@ -260,22 +242,22 @@ const Game = {
     this.backAudio.pause();
     this.gameoverAudio.play();
     clearInterval(this.interval);
-    // Esto refresca la página nada más perder, aunque le metamos los 5 segundos de dlay...
-    // this.setInterval(location.reload(), 5000);
+ 
   },
 
   win() {
     this.score += 250;
-    this.ctx.drawImage(this.enemy.imagewin, this.width / 2 - 250, 100, 600, 400);
+    this.ctx.drawImage(
+      this.enemy.imagewin,
+      this.width / 2 - 250,
+      100,
+      600,
+      400
+    );
     this.backAudio.pause();
     this.winAudio.play();
     this.ctx.fillStyle = "black";
-    this.ctx.fillRect(
-      0,
-      0,
-      window.innerWidth,
-      window.innerHeight*0.2,
-    );
+    this.ctx.fillRect(0, 0, window.innerWidth, window.innerHeight * 0.2);
     this.drawText();
     const btn = document.createElement("button");
     document.body.appendChild(btn);
@@ -283,24 +265,27 @@ const Game = {
     btn.setAttribute("id", "go");
     btn.setAttribute("class", "winner");
     document.getElementById("go").onclick = () => {
-      location.reload()
-  }
+      location.reload();
+    };
     clearInterval(this.interval);
   },
 
   sumTime() {
     this.time += 0.01;
-    // no consigo que muestre solo 2 decimales
+  },
+  // no consigo que muestre solo 2 decimales
+  sumScore() {
+    this.score += 0.01;
   },
 
   //U
   printTime() {
     this.ctx.font = "60px Montserrat";
-    if (this.time>= 60) {
+    if (this.time >= 60) {
       this.min++;
       this.time = 0;
     }
-    if (this.min ===60) {
+    if (this.min === 60) {
       this.hour++;
       this.min = 0;
     }
@@ -309,7 +294,6 @@ const Game = {
   },
 
   addSecond() {
-    
     this.time++;
     if (this.time === 60) {
       this.time = 0;
@@ -321,14 +305,14 @@ const Game = {
     let obstacle;
     this.obstacles.forEach((obs) => {
       if (
-        this.player.posX <= obs.posX + obs.width / 2 && // colision derecha
+        this.player.posX <= obs.posX + obs.width / 2 &&
         this.player.posY + this.player.height >= obs.posY &&
         this.player.posX + this.player.width / 2 >= obs.posX
       ) {
         obstacle = obs;
       }
     });
-    return obstacle; // en un forEach no se puede usar un breack para que salga del break , por eso hay que poner el return por fuera. He cambiado la funcion inicial para que en lugar de true o false devuelva el objeto para poder tener su posicion arriba y hacer el choque hace atrás del player al colisionar.
+    return obstacle;
   },
 
   isCollisionBullet(posX, posY) {
@@ -346,14 +330,13 @@ const Game = {
     document.body.appendChild(btn);
     btn.innerHTML = "Volver a intentar";
     btn.setAttribute("id", "go");
-    btn.setAttribute("class", "gameover")
+    btn.setAttribute("class", "gameover");
     document.getElementById("go").onclick = () => {
-      location.reload()
-  }
-},
-  
+      location.reload();
+    };
+  },
+
   printScore() {
-    
     this.ctx.font = "60px Montserrat";
     this.ctx.fillStyle = "black";
     // this.ctx.fillText(`SCORE:`, window.innerWidth/2 - 60, window.innerHeight*0.9 -100);
