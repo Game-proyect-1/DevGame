@@ -82,6 +82,7 @@ class Enemy {
   }
   move() {
     this.velX += this.aceleration;
+
     if (
       this.isMovingRight &&
       this.posX + this.width >= window.innerWidth / 1.1

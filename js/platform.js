@@ -9,7 +9,7 @@ class Platform {
     this.image = new Image();
     this.image.src = "./img/sprites juego/Platform/платформа-png-5.png";
   }
-
+  
   draw() {
     this.ctx.drawImage(
       this.image,
@@ -23,5 +23,5 @@ class Platform {
 
 // const leftGap = window.innerWidth * 1.1 - window.innerWidth;
 // const rightGap = window.innerWidth * 1.1 - window.innerWidth + window.innerWidth / 1.3;
-const platformStart = this.posX;
-const platformEnd = this.posX + this.width;
+const platformStart = window.innerWidth / 2 - this.width / 2;
+const platformEnd = window.innerWidth / 1.1 + (window.innerWidth / 2 - this.width / 2) ;

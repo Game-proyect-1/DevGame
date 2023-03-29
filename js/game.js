@@ -71,6 +71,7 @@ const Game = {
       this.printScore();
       this.checkEnemyStatus();
       this.checkPlayerStatus();
+      this.fall();
       this.addSecond();
       this.printTime();
 
